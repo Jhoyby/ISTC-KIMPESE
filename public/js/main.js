@@ -224,19 +224,20 @@
     const box = $('#headerSocial');
     if (!box) return;
     const links = [];
-    if (s.facebook) links.push({ href: s.facebook, label: '📘', name: 'Facebook' });
-    if (s.twitter) links.push({ href: s.twitter, label: '𝕏', name: 'X' });
+    if (s.facebook) links.push({ href: s.facebook, icon: '/images/social/facebook.png', label: 'f', name: 'Facebook' });
+    if (s.twitter) links.push({ href: s.twitter, icon: '/images/social/x.png', label: '𝕏', name: 'X' });
     if (s.youtube) links.push({ href: s.youtube, label: '▶', name: 'YouTube' });
-    if (s.instagram) links.push({ href: s.instagram, label: '📸', name: 'Instagram' });
+    if (s.instagram) links.push({ href: s.instagram, icon: '/images/social/instagram.avif', label: 'IG', name: 'Instagram' });
     const waNumber = (s.contactPhone || '').replace(/[^0-9+]/g, '');
     const waHref = waNumber ? 'https://wa.me/' + waNumber.replace(/^\+/, '') : null;
-    // Toujours afficher au moins WhatsApp / Facebook fallback comme ntemo
+    if (waHref) links.push({ href: waHref, icon: '/images/social/whatsapp.webp', label: 'WA', name: 'WhatsApp' });
+    // Toujours afficher au moins les réseaux par défaut comme ntemo
     box.innerHTML = '';
     const defaults = links.length ? links : [
-      { href: s.facebook || '#', label: '📘', name: 'Facebook' },
-      { href: s.twitter || '#', label: '𝕏', name: 'X' },
+      { href: s.facebook || '#', icon: '/images/social/facebook.png', label: 'f', name: 'Facebook' },
+      { href: s.twitter || '#', icon: '/images/social/x.png', label: '𝕏', name: 'X' },
       { href: s.youtube || '#', label: '▶', name: 'YouTube' },
-      { href: waHref || '#', label: '💬', name: 'WhatsApp' }
+      { href: waHref || '#', icon: '/images/social/whatsapp.webp', label: 'WA', name: 'WhatsApp' }
     ];
     for (const l of defaults) {
       const a = document.createElement('a');
@@ -245,7 +246,15 @@
       a.setAttribute('aria-label', l.name);
       a.target = '_blank';
       a.rel = 'noopener';
-      a.textContent = l.label;
+      if (l.icon) {
+        const img = document.createElement('img');
+        img.src = asset(l.icon);
+        img.alt = l.name;
+        img.loading = 'lazy';
+        a.appendChild(img);
+      } else {
+        a.textContent = l.label;
+      }
       box.appendChild(a);
     }
   }

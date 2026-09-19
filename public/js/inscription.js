@@ -6,6 +6,21 @@
   let selectedPayment = '';
   let currentTheme = 'light';
 
+  function siteBase() {
+    try {
+      const seg = location.pathname.split('/').filter(Boolean);
+      if (location.hostname.endsWith('github.io') && seg.length) return '/' + seg[0];
+      return '';
+    } catch (e) { return ''; }
+  }
+  const BASE = siteBase();
+  function asset(p) {
+    if (!p) return p;
+    if (/^(https?:|data:|blob:)/i.test(p)) return p;
+    if (p.charAt(0) === '/') return BASE + p;
+    return p;
+  }
+
   /* ---------- Thème ---------- */
   function themeVars(s) {
     const dark = currentTheme === 'dark';
@@ -139,8 +154,8 @@
 
   /* ---------- Paiements (façon WeUnlocks) ---------- */
   const PAYMENT_METHODS = [
-    { key: 'orangeEnabled', name: 'Orange Money', icon: '/images/payments/orange-money.svg', type: 'mobile' },
-    { key: 'mpesaEnabled', name: 'M-Pesa', icon: '/images/payments/mpesa.svg', type: 'mobile' },
+    { key: 'orangeEnabled', name: 'Orange Money', icon: '/images/payments/orange-money.png', type: 'mobile' },
+    { key: 'mpesaEnabled', name: 'M-Pesa', icon: '/images/payments/m-pesa.png', type: 'mobile' },
     { key: 'mtnEnabled', name: 'MTN MoMo', icon: '/images/payments/mtn-momo.svg', type: 'mobile' },
     { key: 'airtelEnabled', name: 'Airtel Money', icon: '/images/payments/airtel-money.svg', type: 'mobile' },
     { key: 'cryptoEnabled', name: 'USDT', icon: '/images/payments/usdt.svg', type: 'crypto' },
@@ -173,7 +188,7 @@
       label.innerHTML = `
         <input type="radio" name="payment" value="${m.name}">
         <span class="option-card">
-          <img class="pay-logo" src="${m.icon}" alt="${m.name}">${m.name}
+          <img class="pay-logo" src="${asset(m.icon)}" alt="${m.name}">${m.name}
         </span>`;
       label.querySelector('input').addEventListener('change', () => onPaymentChange(m.name));
       el.appendChild(label);
@@ -235,7 +250,7 @@
       if (m.type === 'crypto' && m.name === 'USDT' && !settings.usdtAddress) continue;
       const badge = document.createElement('span');
       badge.className = 'payment-badge';
-      badge.innerHTML = `<img class="pay-logo" src="${m.icon}" alt="${m.name}">${m.name}`;
+      badge.innerHTML = `<img class="pay-logo" src="${asset(m.icon)}" alt="${m.name}">${m.name}`;
       el.appendChild(badge);
     }
   }
@@ -244,9 +259,9 @@
     const el = $('#socialLinks');
     el.innerHTML = '';
     const items = [
-      { name: 'Facebook', key: 'facebook', label: 'f' },
-      { name: 'Twitter', key: 'twitter', label: '𝕏' },
-      { name: 'Instagram', key: 'instagram', label: 'IG' },
+      { name: 'Facebook', key: 'facebook', icon: '/images/social/facebook.png', label: 'f' },
+      { name: 'Twitter', key: 'twitter', icon: '/images/social/x.png', label: '𝕏' },
+      { name: 'Instagram', key: 'instagram', icon: '/images/social/instagram.avif', label: 'IG' },
       { name: 'YouTube', key: 'youtube', label: '▶' }
     ];
     for (const item of items) {
@@ -256,7 +271,15 @@
         a.target = '_blank';
         a.rel = 'noopener';
         a.title = item.name;
-        a.textContent = item.label;
+        if (item.icon) {
+          const img = document.createElement('img');
+          img.src = asset(item.icon);
+          img.alt = item.name;
+          img.loading = 'lazy';
+          a.appendChild(img);
+        } else {
+          a.textContent = item.label;
+        }
         el.appendChild(a);
       }
     }

@@ -86,20 +86,30 @@
       const el = $(sel); if (!el) continue;
       el.innerHTML = '';
       const items = [];
-      if (s.facebook) items.push({ href: s.facebook, label: '📘', name: 'Facebook' });
-      if (s.twitter) items.push({ href: s.twitter, label: '𝕏', name: 'X' });
+      if (s.facebook) items.push({ href: s.facebook, icon: '/images/social/facebook.png', label: 'f', name: 'Facebook' });
+      if (s.twitter) items.push({ href: s.twitter, icon: '/images/social/x.png', label: '𝕏', name: 'X' });
       if (s.youtube) items.push({ href: s.youtube, label: '▶', name: 'YouTube' });
-      if (s.instagram) items.push({ href: s.instagram, label: '📸', name: 'Instagram' });
+      if (s.instagram) items.push({ href: s.instagram, icon: '/images/social/instagram.avif', label: 'IG', name: 'Instagram' });
+      const waNumber = (s.contactPhone || '').replace(/[^0-9+]/g, '');
+      const waHref = waNumber ? 'https://wa.me/' + waNumber.replace(/^\+/, '') : null;
+      if (waHref) items.push({ href: waHref, icon: '/images/social/whatsapp.webp', label: 'WA', name: 'WhatsApp' });
       const list = items.length ? items : [
-        { href: '#', label: '📘', name: 'Facebook' },
-        { href: '#', label: '𝕏', name: 'X' },
+        { href: '#', icon: '/images/social/facebook.png', label: 'f', name: 'Facebook' },
+        { href: '#', icon: '/images/social/x.png', label: '𝕏', name: 'X' },
         { href: '#', label: '▶', name: 'YouTube' },
-        { href: '#', label: '💬', name: 'WhatsApp' }
+        { href: '#', icon: '/images/social/whatsapp.webp', label: 'WA', name: 'WhatsApp' }
       ];
       for (const it of list) {
         const a = document.createElement('a');
         a.href = it.href; a.target = '_blank'; a.rel = 'noopener';
-        a.title = it.name; a.className = 'social-link'; a.textContent = it.label;
+        a.title = it.name; a.className = 'social-link';
+        if (it.icon) {
+          const img = document.createElement('img');
+          img.src = asset(it.icon); img.alt = it.name; img.loading = 'lazy';
+          a.appendChild(img);
+        } else {
+          a.textContent = it.label;
+        }
         el.appendChild(a);
       }
     }
