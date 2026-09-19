@@ -81,15 +81,13 @@ a { color: inherit; }
 }
 
 /* ---------- Header ---------- */
-.site-header { position: sticky; -webkit-sticky: auto;
+.site-header { position: sticky; position: -webkit-sticky;
   top: 0;
   z-index: 100;
   background: var(--header-bg);
   color: var(--header-text);
-  -webkit-backdrop-filter: 
-  backdrop-filter:  blur(14px);
-  -webkit-backdrop-filter: 
-  backdrop-filter:  blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   transition:  background 0.35s ease, color 0.35s ease;
 }
@@ -251,8 +249,8 @@ a { color: inherit; }
   letter-spacing: 0.8px;
   text-transform: uppercase;
   margin-bottom: 20px;
-  -webkit-backdrop-filter: 
-  backdrop-filter:  blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 .hero-title {
@@ -285,8 +283,8 @@ a { color: inherit; }
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius);
   padding: 22px 20px;
-  -webkit-backdrop-filter: 
-  backdrop-filter:  blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   transition:  transform 0.25s, background 0.25s;
 }
 
@@ -473,7 +471,8 @@ a { color: inherit; }
 
 .mini-thumb {
   position: relative;
-  aspect-ratio:  16 / 10;
+  -webkit-aspect-ratio: 16 / 10;
+aspect-ratio: 16 / 10;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   overflow: hidden;
 }
@@ -508,7 +507,8 @@ a { color: inherit; }
   grid-template-columns: 1.1fr 1fr;
 }
 
-.lead-card .mini-thumb { aspect-ratio:  auto; min-height: 100%; }
+.lead-card .mini-thumb { -webkit-aspect-ratio: auto;
+aspect-ratio: auto; min-height: 100%; }
 
 .lead-card .mini-info { padding: 30px 32px; justify-content: center; }
 
@@ -844,7 +844,7 @@ a { color: inherit; }
 
 .article-layout .article-page-body { -webkit-overflow-scrolling: touch; max-width: none; padding-top: 34px; }
 
-.article-sidebar { position: sticky; -webkit-sticky: auto;
+.article-sidebar { position: sticky; position: -webkit-sticky;
   top: 84px;
   padding-top: 34px;
 }
@@ -992,7 +992,7 @@ a { color: inherit; }
   color: #fff;
   border-radius: var(--radius);
   padding: 38px;
-  position: sticky; -webkit-sticky: auto;
+  position: sticky; position: -webkit-sticky;
   top: 100px;
   box-shadow: 0 22px 55px rgba(var(--primary-rgb), 0.32);
   overflow: hidden;
@@ -1177,8 +1177,8 @@ a { color: inherit; }
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  -webkit-backdrop-filter: 
-  backdrop-filter:  blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .ussd-phone {
@@ -1337,7 +1337,8 @@ a { color: inherit; }
   .hero { padding: 64px 0 76px; }
   .hero-stats { max-width: 520px; }
   .lead-card { grid-template-columns: 1fr; }
-  .lead-card .mini-thumb { aspect-ratio:  16 / 9; min-height: 0; }
+  .lead-card .mini-thumb { -webkit-aspect-ratio: 16 / 9;
+aspect-ratio: 16 / 9; min-height: 0; }
   .inscription-card { grid-template-columns: 1fr; padding: 36px 28px; }
   .about-grid { grid-template-columns: 1fr; }
   .registration-layout { grid-template-columns: 1fr; }
@@ -1350,8 +1351,8 @@ a { color: inherit; }
     align-items: stretch;
     gap: 4px;
     background: var(--header-bg);
-    -webkit-backdrop-filter: 
-  backdrop-filter:  blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
     padding: 22px 26px calc(22px + env(safe-area-inset-bottom));
     transform: translateY(105%);
     transition:  transform 0.35s ease;
