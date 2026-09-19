@@ -6,6 +6,25 @@
   let currentTheme = 'light';
   let currentArticle = null;
 
+  function siteBase() {
+    try {
+      const seg = location.pathname.split('/').filter(Boolean);
+      if (location.hostname.endsWith('github.io') && seg.length) return '/' + seg[0];
+      return '';
+    } catch (e) { return ''; }
+  }
+  const BASE = siteBase();
+  function asset(p) {
+    if (!p) return p;
+    if (/^(https?:|data:|blob:)/i.test(p)) return p;
+    if (p.charAt(0) === '/') return BASE + p;
+    return p;
+  }
+  function pageUrl(path) {
+    if (/^(https?:)/i.test(path)) return path;
+    return asset(path.charAt(0) === '/' ? path : '/' + path);
+  }
+
   function themeVars(s) {
     const dark = currentTheme === 'dark';
     return {
@@ -28,13 +47,13 @@
   function renderLogo(s) {
     const img = $('#brandMarkImg'); const text = $('#brandMarkText');
     if (img && text) {
-      if (s.logoImage) { img.src = s.logoImage; img.classList.remove('hidden'); text.classList.add('hidden'); }
+      if (s.logoImage) { img.src = asset(s.logoImage); img.classList.remove('hidden'); text.classList.add('hidden'); }
       else { img.classList.add('hidden'); text.classList.remove('hidden'); }
     }
     const fav = $('#siteFavicon'); if (fav) fav.href = s.favicon || s.logoImage || '/favicon.svg';
     const footerLogo = $('#footerLogo');
     if (footerLogo) {
-      if (s.logoImage) { footerLogo.src = s.logoImage; footerLogo.classList.remove('hidden'); }
+      if (s.logoImage) { footerLogo.src = asset(s.logoImage); footerLogo.classList.remove('hidden'); }
       else footerLogo.classList.add('hidden');
     }
   }
@@ -127,7 +146,7 @@
   function escapeHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
   function imageToken(url) {
-    return url ? `<figure class="article-figure"><img src="${url}" alt="" loading="lazy"></figure>` : '';
+    return url ? `<figure class="article-figure"><img src="${asset(url)}" alt="" loading="lazy"></figure>` : '';
   }
 
   function renderContent(content, images) {
@@ -146,7 +165,7 @@
   }
 
   function thumb(a) {
-    if (a.image) return `<img src="${a.image}" alt="${escapeHtml(a.title)}" loading="lazy">`;
+    if (a.image) return `<img src="${asset(a.image)}" alt="${escapeHtml(a.title)}" loading="lazy">`;
     return `<div class="placeholder">${escapeHtml(initials(a.title))}</div>`;
   }
 
@@ -162,7 +181,7 @@
     const aa = $('#authorAvatar'); if (aa) aa.textContent = initials(a.author || 'ISTC');
     const pi = $('#pageImage');
     if (pi) {
-      if (a.image) { pi.src = a.image; pi.alt = a.title; pi.classList.remove('hidden'); }
+      if (a.image) { pi.src = asset(a.image); pi.alt = a.title; pi.classList.remove('hidden'); }
       else pi.classList.add('hidden');
     }
     const pcEl = $('#pageContent');
@@ -182,14 +201,14 @@
       const tagList = [a.category, ...(a.title.split(' ').filter((w) => w.length > 5).slice(0, 3))].filter(Boolean);
       for (const t of [...new Set(tagList)]) {
         const el = document.createElement('a');
-        el.className = 'article-tag'; el.href = '/#actualites'; el.textContent = '#' + t;
+        el.className = 'article-tag'; el.href = './#articlesSection'; el.textContent = '#' + t;
         tags.appendChild(el);
       }
     }
     bindShare();
   }
 
-  function articleUrl(a) { return location.origin + '/article.html?id=' + (a ? a.id : ''); }
+  function articleUrl(a) { return location.origin + pageUrl('/article.html?id=' + (a ? a.id : '')); }
 
   function bindShare() {
     const url = articleUrl(currentArticle);
@@ -204,13 +223,13 @@
 
   function miniRow(a) {
     const el = document.createElement('a');
-    el.className = 'mini-row'; el.href = '/article.html?id=' + a.id;
+    el.className = 'mini-row'; el.href = pageUrl('/article.html?id=' + a.id);
     el.innerHTML = `<span class="mini-row-thumb">${thumb(a)}</span><span class="mini-row-body"><span class="mini-row-cat">${escapeHtml(a.category)} · ${shortDate(a.date)}</span><span class="mini-row-title">${escapeHtml(a.title)}</span></span>`;
     return el;
   }
 
   function newsCard(a) {
-    const link = '/article.html?id=' + a.id;
+    const link = pageUrl('/article.html?id=' + a.id);
     const el = document.createElement('article');
     el.className = 'news-card';
     el.innerHTML = `<a class="news-thumb" href="${link}">${thumb(a)}<span class="news-cat">${escapeHtml(a.category)}</span></a><div class="news-body"><div class="news-meta"><span>${escapeHtml(a.author || 'ISTC')}</span><span>·</span><time>${shortDate(a.date)}</time></div><h3 class="news-title"><a href="${link}">${escapeHtml(a.title)}</a></h3></div>`;
@@ -245,7 +264,7 @@
     nav.innerHTML = '';
     for (const c of cats) {
       const a = document.createElement('a');
-      a.href = '/#actualites'; a.className = 'cat-link'; a.dataset.cat = c;
+      a.href = './#articlesSection'; a.className = 'cat-link'; a.dataset.cat = c;
       a.textContent = c === 'all' ? 'Actualités' : c;
       nav.appendChild(a);
     }
@@ -278,7 +297,7 @@
     } catch (e) {
       console.error(e);
       const pc = $('#pageContent');
-      if (pc) pc.innerHTML = '<p>Cet article n\'existe pas ou n\'est pas disponible. <a href="/#actualites" class="back-link">Retour aux actualités →</a></p>';
+      if (pc) pc.innerHTML = '<p>Cet article n\'existe pas ou n\'est pas disponible. <a href="./#articlesSection" class="back-link">Retour aux actualités →</a></p>';
     }
   }
 

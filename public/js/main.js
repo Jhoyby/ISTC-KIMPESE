@@ -13,6 +13,27 @@
 
   const root = document.documentElement;
 
+  /* ---------- Base path (GitHub Project Pages = /REPO/) ---------- */
+  function siteBase() {
+    try {
+      const seg = location.pathname.split('/').filter(Boolean);
+      // Project pages: /ISTC-KIMPESE/... -> base /ISTC-KIMPESE ; root hosting -> ''
+      if (location.hostname.endsWith('github.io') && seg.length) return '/' + seg[0];
+      return '';
+    } catch (e) { return ''; }
+  }
+  const BASE = siteBase();
+  function asset(p) {
+    if (!p) return p;
+    if (/^(https?:|data:|blob:)/i.test(p)) return p;
+    if (p.charAt(0) === '/') return BASE + p;
+    return p;
+  }
+  function pageUrl(path) {
+    if (/^(https?:)/i.test(path)) return path;
+    return asset(path.charAt(0) === '/' ? path : '/' + path);
+  }
+
   /* ---------- Thème ---------- */
   function themeVars(s) {
     const dark = currentTheme === 'dark';
@@ -41,7 +62,7 @@
   }
 
   function renderTheme() {
-    const stored = null;
+    let stored = null;
     try { stored = localStorage.getItem('istc_theme'); } catch (e) {}
     currentTheme = stored || settings.defaultTheme || 'light';
     root.setAttribute('data-theme', currentTheme);
@@ -130,7 +151,7 @@
     const text = $('#brandMarkText');
     if (img && text) {
       if (s.logoImage) {
-        img.src = s.logoImage;
+        img.src = asset(s.logoImage);
         img.classList.remove('hidden');
         text.classList.add('hidden');
       } else {
@@ -143,7 +164,7 @@
     const footerLogo = $('#footerLogo');
     if (footerLogo) {
       if (s.logoImage) {
-        footerLogo.src = s.logoImage;
+        footerLogo.src = asset(s.logoImage);
         footerLogo.classList.remove('hidden');
       } else {
         footerLogo.classList.add('hidden');
@@ -256,7 +277,7 @@
   }
 
   function thumbHTML(a, cls) {
-    if (a.image) return `<img src="${a.image}" alt="${escapeHtml(a.title)}" loading="lazy">`;
+    if (a.image) return `<img src="${asset(a.image)}" alt="${escapeHtml(a.title)}" loading="lazy">`;
     return `<div class="placeholder ${cls || ''}">${escapeHtml(initials(a.title))}</div>`;
   }
 
@@ -324,10 +345,10 @@
     if (!list.length) { wrap.classList.add('hidden'); return; }
     wrap.classList.remove('hidden');
     const feat = list.find((a) => a.featured) || list[0];
-    const link = '/article.html?id=' + feat.id;
+    const link = pageUrl('/article.html?id=' + feat.id);
     const img = $('#featuredImg');
     if (img) {
-      if (feat.image) { img.src = feat.image; img.alt = feat.title; img.classList.remove('hidden'); }
+      if (feat.image) { img.src = asset(feat.image); img.alt = feat.title; img.classList.remove('hidden'); }
       else { img.classList.add('hidden'); }
     }
     const fl = $('#featuredLink'); if (fl) fl.href = link;
@@ -341,7 +362,7 @@
   /* ---------- Cartes façon ntemo ---------- */
   function articleCard(a, opts) {
     opts = opts || {};
-    const link = '/article.html?id=' + a.id;
+    const link = pageUrl('/article.html?id=' + a.id);
     const card = document.createElement('article');
     card.className = 'news-card' + (opts.large ? ' news-card-large' : '') + (opts.small ? ' news-card-small' : '');
     card.setAttribute('role', 'listitem');
@@ -363,7 +384,7 @@
   }
 
   function miniRow(a) {
-    const link = '/article.html?id=' + a.id;
+    const link = pageUrl('/article.html?id=' + a.id);
     const el = document.createElement('a');
     el.className = 'mini-row';
     el.href = link;
@@ -500,7 +521,7 @@
   function openShare(id, title) {
     const a = allArticles.find((x) => String(x.id) === String(id));
     shareTitle = title || (a ? a.title : document.title);
-    shareUrl = a ? (location.origin + '/article.html?id=' + a.id) : location.href;
+    shareUrl = a ? (location.origin + pageUrl('/article.html?id=' + a.id)) : location.href;
     const m = $('#shareModal');
     if (m) m.classList.remove('hidden');
     const st = $('#shareTitle');
