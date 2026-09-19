@@ -44,13 +44,36 @@
   <meta name="twitter:description" content="Actualités, annonces et informations officielles de l'Institut Supérieur de Techniques Commerciales (ISTC) Kimpese.">
   <meta name="twitter:image" content="/images/og-default.jpg">
   <meta name="twitter:image:alt" content="ISTC Kimpese - Institut Supérieur de Techniques Commerciales">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ISTC News","url":"https://jhoyby.github.io/ISTC-KIMPESE/","description":"Actualités officielles de l'Institut Supérieur de Techniques Commerciales Kimpese","inLanguage":"fr-FR","publisher":{"@type":"Organization","name":"Institut Supérieur de Techniques Commerciales Kimpese","url":"https://jhoyby.github.io/ISTC-KIMPESE/","logo":{"@type":"ImageObject","url":"https://jhoyby.github.io/ISTC-KIMPESE/logo.png"}},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://jhoyby.github.io/ISTC-KIMPESE/#actualites?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ISTC News","url":"https://jhoyby.github.io/ISTC-KIMPESE/","description":"Actualités officielles de l'Institut Supérieur de Techniques Commerciales Kimpese","inLanguage":"fr-FR","publisher":{"@type":"Organization","name":"Institut Supérieur de Techniques Commerciales Kimpese","url":"https://jhoyby.github.io/ISTC-KIMPESE/","logo":{"@type":"ImageObject","url":"https://jhoyby.github.io/ISTC-KIMPESE/logo.png"}},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://jhoyby.github.io/ISTC-KIMPESE/?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
   <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('istc_theme')||'light')}catch(e){}</script>
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 </head>
 <body>
   <div id="announcementBar" class="announcement-bar hidden"></div>
 
+  <!-- Top bar with date and category navigation -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <span class="current-date" id="currentDate"></span>
+      </div>
+      <nav class="category-nav" id="categoryNav" aria-label="Catégories">
+        <a href="#" class="cat-link active" data-cat="all">Actualités</a>
+        <a href="#" class="cat-link" data-cat="Annonces">Annonces</a>
+        <a href="#" class="cat-link" data-cat="Académique">Académique</a>
+        <a href="#" class="cat-link" data-cat="Carrière">Carrière</a>
+        <a href="#" class="cat-link" data-cat="Sport">Sport</a>
+        <a href="#" class="cat-link" data-cat="Vie étudiante">Vie étudiante</a>
+        <a href="#" class="cat-link" data-cat="Culture">Culture</a>
+        <a href="#" class="cat-link" data-cat="Divertissement">Divertissement</a>
+      </nav>
+      <div class="top-bar-right">
+        <a href="/inscription.html" class="btn-inscription">Inscriptions</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="brand">
@@ -63,14 +86,12 @@
           <span class="brand-sub" id="brandFullName">Institut Supérieur de Techniques Commerciales</span>
         </span>
       </a>
-      <nav class="main-nav" id="mainNav">
-        <a href="#accueil" class="active">Accueil</a>
-        <a href="#actualites">Actualités</a>
-        <a href="#a-propos">À propos</a>
-        <a href="/inscription.html">Inscription</a>
-        <a href="#contact">Contact</a>
-        <a href="/admin/" class="nav-admin">Administration</a>
-      </nav>
+      <div class="header-social" id="headerSocial">
+        <a href="#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">📘</a>
+        <a href="#" class="social-link" aria-label="Twitter" target="_blank" rel="noopener">𝕏</a>
+        <a href="#" class="social-link" aria-label="YouTube" target="_blank" rel="noopener">▶</a>
+        <a href="#" class="social-link whatsapp" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
+      </div>
       <button class="theme-toggle" id="themeToggle" title="Mode sombre / clair" aria-label="Mode sombre / clair">🌙</button>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -78,128 +99,169 @@
     </div>
   </header>
 
-  <section class="hero" id="accueil">
-    <div class="container hero-inner">
-      <div class="hero-content">
-        <span class="hero-eyebrow">Dernières publications</span>
-        <h1 class="hero-title">L'actualité de l'<span class="accent">ISTC</span> en direct</h1>
-        <p class="hero-sub" id="heroText">Découvrez les dernières actualités, événements et réussites de l'Institut Supérieur de Techniques Commerciales.</p>
-        <div class="hero-actions">
-          <a href="#actualites" class="btn btn-hero">Voir les actualités</a>
-          <a href="/inscription.html" class="btn btn-outline">S'inscrire à distance</a>
-        </div>
-      </div>
-      <div class="hero-stats" id="heroStats">
-        <div class="hero-stat hero-live" id="liveWidget">
-          <span class="live-head"><span class="live-dot"></span>Dernière publication</span>
-          <a class="live-title" id="liveTitle" href="#">Chargement…</a>
-          <span class="live-meta" id="liveMeta"></span>
-        </div>
-        <div class="hero-stat">
-          <b id="statInscriptions">En ligne</b>
-          <span>Inscriptions à distance</span>
-        </div>
-        <div class="hero-stat">
-          <b id="statEst">ISTC</b>
-          <span>Institut Supérieur</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <main class="container">
-    <section class="section" id="actualites">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Actualités</span>
-          <h2 class="section-title">Dernières publications</h2>
-        </div>
-        <div class="category-filter" id="categoryFilter"></div>
+    <!-- Featured Article -->
+    <section class="featured-section" id="featuredSection" aria-labelledby="featuredTitle">
+      <div class="featured-article" id="featuredArticle">
+        <article class="featured-card">
+          <div class="featured-image" id="featuredImage">
+            <a href="#" id="featuredLink">
+              <img src="" alt="" loading="lazy" id="featuredImg">
+            </a>
+            <div class="featured-cat" id="featuredCat"></div>
+          </div>
+          <div class="featured-content">
+            <span class="featured-eyebrow" id="featuredEyebrow">À la une</span>
+            <h2 class="featured-title" id="featuredTitle"><a href="#" id="featuredTitleLink">Chargement…</a></h2>
+            <p class="featured-excerpt" id="featuredExcerpt"></p>
+            <div class="featured-meta">
+              <span class="featured-author" id="featuredAuthor"></span>
+              <time class="featured-date" id="featuredDate"></time>
+            </div>
+          </div>
+        </article>
       </div>
-      <div class="articles-grid" id="articlesGrid">
+    </section>
+
+    <!-- Main Articles Grid -->
+    <section class="articles-section" id="articlesSection" aria-labelledby="articlesTitle">
+      <header class="section-header">
+        <h2 class="section-title" id="articlesTitle">Dernières actualités</h2>
+        <div class="section-actions">
+          <span class="articles-count" id="articlesCount">0 articles</span>
+        </div>
+      </header>
+      <div class="articles-grid" id="articlesGrid" role="list">
         <div class="loading">Chargement des actualités…</div>
       </div>
-    </section>
-
-    <section class="section about-section" id="a-propos">
-      <div>
-        <span class="eyebrow">À propos</span>
-        <h2 class="section-title">L'Institut Supérieur de Techniques Commerciales</h2>
-      </div>
-      <div class="about-grid">
-        <p id="aboutText">L'Institut Supérieur de Techniques Commerciales forme les futurs professionnels du commerce, de la gestion et de la communication. Nous allions excellence académique, pratique professionnelle et innovation pour préparer nos étudiants aux défis du marché.</p>
-        <ul class="about-points">
-          <li>Formation pratique orientée vers le marché de l'emploi</li>
-          <li>Corps professoral engagé et qualifié</li>
-          <li>Partenariats avec les entreprises de la place</li>
-          <li>Inscriptions à distance en quelques minutes</li>
-        </ul>
+      <div class="load-more-container" id="loadMoreContainer">
+        <button class="btn btn-load-more" id="loadMoreBtn">Charger plus</button>
       </div>
     </section>
 
-    <section class="section inscription-section" id="inscription">
-      <div class="inscription-card">
-        <div class="inscription-info">
-          <span class="eyebrow">Admissions ouvertes</span>
-          <h2 class="section-title" id="inscriptionTitle">Inscriptions à distance</h2>
-          <p id="inscriptionText"></p>
-          <div>
-            <span class="inscription-deadline" id="inscriptionDeadline"></span>
-          </div>
-          <div class="payment-badges" id="paymentBadges"></div>
-        </div>
-        <div class="inscription-cta">
-          <a href="/inscription.html" class="btn btn-hero btn-big">S'inscrire maintenant</a>
-          <p class="inscription-help">Paiement en ligne sécurisé</p>
-        </div>
+    <!-- Lire Aussi Section -->
+    <section class="sidebar-section lire-aussi" id="lireAussiSection" aria-labelledby="lireAussiTitle">
+      <header class="section-header">
+        <h2 class="section-title" id="lireAussiTitle">Lire Aussi</h2>
+      </header>
+      <div class="lire-aussi-grid" id="lireAussiGrid" role="list">
+        <div class="loading">Chargement…</div>
       </div>
     </section>
 
-    <section class="section contact-section" id="contact">
-      <div>
-        <span class="eyebrow">Contact</span>
-        <h2 class="section-title">Contactez-nous</h2>
+    <!-- Pour Vous Section -->
+    <section class="sidebar-section pour-vous" id="pourVousSection" aria-labelledby="pourVousTitle">
+      <header class="section-header">
+        <h2 class="section-title" id="pourVousTitle">Pour Vous</h2>
+      </header>
+      <div class="pour-vous-grid" id="pourVousGrid" role="list">
+        <div class="loading">Chargement…</div>
       </div>
-      <div class="contact-grid">
-        <div class="contact-item">
-          <div class="contact-icon">✉</div>
-          <strong>Email</strong>
-          <span id="contactEmail"></span>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">☎</div>
-          <strong>Téléphone</strong>
-          <span id="contactPhone"></span>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📍</div>
-          <strong>Adresse</strong>
-          <span id="contactAddress"></span>
-        </div>
+    </section>
+
+    <!-- Plus d'actu Section -->
+    <section class="plus-actu-section" id="plusActuSection" aria-labelledby="plusActuTitle">
+      <header class="section-header">
+        <h2 class="section-title" id="plusActuTitle">Plus d'actu</h2>
+      </header>
+      <div class="plus-actu-grid" id="plusActuGrid" role="list">
+        <div class="loading">Chargement…</div>
       </div>
+    </section>
+
+    <!-- Category Sections -->
+    <section class="category-sections" id="categorySections" aria-labelledby="catSectionsTitle">
+      <h2 class="section-title" id="catSectionsTitle" style="display:none;">Par catégorie</h2>
+      <div class="cat-sections-grid" id="catSectionsGrid"></div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>
+    <div class="container footer-main">
+      <div class="footer-brand">
         <img class="footer-logo hidden" id="footerLogo" alt="Logo">
         <strong id="footerBrand">ISTC News</strong>
         <p id="footerTagline"></p>
+        <p class="footer-desc">Votre source d'information officielle de l'Institut Supérieur de Techniques Commerciales Kimpese. Actualités vérifiées, annonces académiques, vie étudiante.</p>
       </div>
-      <div class="footer-links">
-        <a href="#accueil">Accueil</a>
-        <a href="#actualites">Actualités</a>
-        <a href="#a-propos">À propos</a>
-        <a href="/inscription.html">Inscription à distance</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <div class="social-links" id="socialLinks"></div>
+      <nav class="footer-nav">
+        <div class="footer-col">
+          <h3>Liens rapides</h3>
+          <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="#actualites">Actualités</a></li>
+            <li><a href="/inscription.html">Inscriptions</a></li>
+            <li><a href="#a-propos">À propos</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Catégories</h3>
+          <ul>
+            <li><a href="#" data-cat="Annonces">Annonces</a></li>
+            <li><a href="#" data-cat="Académique">Académique</a></li>
+            <li><a href="#" data-cat="Carrière">Carrière</a></li>
+            <li><a href="#" data-cat="Sport">Sport</a></li>
+            <li><a href="#" data-cat="Vie étudiante">Vie étudiante</a></li>
+            <li><a href="#" data-cat="Culture">Culture</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Informations</h3>
+          <ul>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Équipe</a></li>
+            <li><a href="#">Nous contacter</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-contact">
+          <h3>Contact</h3>
+          <ul>
+            <li id="footerEmail"><span>✉</span> <a href="mailto:"></a></li>
+            <li id="footerPhone"><span>☎</span> <a href="tel:"></a></li>
+            <li id="footerAddress"><span>📍</span> <span></span></li>
+          </ul>
+        </div>
+      </nav>
     </div>
-    <div class="container footer-bottom">
-      <p id="copyright"></p>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p id="copyright"></p>
+        <p class="footer-credits">Site conçu par <a href="https://github.com/Jhoyby" target="_blank" rel="noopener">Jhoyby</a> · <a href="/admin/" class="admin-link">Administration</a></p>
+      </div>
     </div>
   </footer>
+
+  <!-- Article Share Modal -->
+  <div class="share-modal hidden" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+    <div class="share-backdrop" id="shareBackdrop"></div>
+    <div class="share-panel">
+      <header class="share-header">
+        <h3 id="shareTitle">Partager cet article</h3>
+        <button class="share-close" id="shareClose" aria-label="Fermer">✕</button>
+      </header>
+      <div class="share-options">
+        <button class="share-btn whatsapp" id="shareWhatsapp" data-action="whatsapp">
+          <span class="share-icon">💬</span>
+          <span>WhatsApp</span>
+        </button>
+        <button class="share-btn facebook" id="shareFacebook" data-action="facebook">
+          <span class="share-icon">📘</span>
+          <span>Facebook</span>
+        </button>
+        <button class="share-btn twitter" id="shareTwitter" data-action="twitter">
+          <span class="share-icon">𝕏</span>
+          <span>Twitter</span>
+        </button>
+        <button class="share-btn copy" id="shareCopy" data-action="copy">
+          <span class="share-icon">🔗</span>
+          <span>Copier le lien</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="/js/main.js"></script>
 </body>

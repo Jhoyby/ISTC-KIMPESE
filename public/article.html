@@ -50,6 +50,14 @@
 <body>
   <div id="announcementBar" class="announcement-bar hidden"></div>
 
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left"><span class="current-date" id="currentDate"></span></div>
+      <nav class="category-nav" id="categoryNav" aria-label="Catégories"></nav>
+      <div class="top-bar-right"><a href="/inscription.html" class="btn-inscription">Inscriptions</a></div>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="brand">
@@ -62,27 +70,28 @@
           <span class="brand-sub" id="brandFullName">Institut Supérieur de Techniques Commerciales</span>
         </span>
       </a>
-      <nav class="main-nav" id="mainNav">
-        <a href="/#accueil">Accueil</a>
-        <a href="/#actualites">Actualités</a>
-        <a href="/inscription.html">Inscription</a>
-        <a href="/#contact">Contact</a>
-      </nav>
+      <div class="header-social" id="headerSocial"></div>
       <button class="theme-toggle" id="themeToggle" title="Mode sombre / clair" aria-label="Mode sombre / clair">🌙</button>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <section class="article-page-hero">
     <div class="container">
+      <nav class="article-breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / <a href="/#actualites">Actualités</a> / <span id="crumbTitle">Article</span></nav>
       <a href="/#actualites" class="back-link">← Retour aux actualités</a>
       <span class="article-page-category" id="pageCategory"></span>
       <h1 class="article-page-title" id="pageTitle"></h1>
       <div class="article-page-meta">
         <span class="avatar" id="pageAvatar">ISTC</span>
         <span id="pageMeta"></span>
+      </div>
+      <div class="article-share-bar">
+        <span>Partager :</span>
+        <button class="share-inline whatsapp" id="artShareWa">💬 WhatsApp</button>
+        <button class="share-inline facebook" id="artShareFb">📘 Facebook</button>
+        <button class="share-inline" id="artShareX">𝕏 X</button>
+        <button class="share-inline" id="artShareCopy">🔗 Copier le lien</button>
       </div>
     </div>
   </section>
@@ -92,40 +101,44 @@
       <div class="article-page-body">
         <img class="featured-image hidden" id="pageImage" alt="">
         <div id="pageContent" class="loading">Chargement de l'article…</div>
+        <div class="article-tags" id="articleTags"></div>
+        <div class="author-box" id="authorBox">
+          <span class="author-avatar" id="authorAvatar">I</span>
+          <div><strong id="authorName">ISTC</strong><br><small id="authorRole">Rédaction ISTC News — Kimpese, Kongo Central</small></div>
+        </div>
       </div>
-
       <aside class="article-sidebar">
         <div class="sidebar-box">
           <h3 class="sidebar-title">À lire aussi</h3>
           <div id="sidebarSuggestions"></div>
         </div>
+        <div class="sidebar-box">
+          <h3 class="sidebar-title">Suivez-nous</h3>
+          <div class="header-social" id="sidebarSocial"></div>
+        </div>
       </aside>
     </div>
-
     <section class="related-articles" id="relatedSection">
-      <h3>Articles similaires</h3>
-      <div class="articles-grid" id="relatedGrid"></div>
+      <header class="section-header"><h3 class="section-title">Articles similaires</h3></header>
+      <div class="plus-actu-grid" id="relatedGrid"></div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>
+    <div class="container footer-main">
+      <div class="footer-brand">
         <img class="footer-logo hidden" id="footerLogo" alt="Logo">
         <strong id="footerBrand">ISTC News</strong>
         <p id="footerTagline"></p>
+        <p class="footer-desc">Votre source d'information officielle de l'ISTC Kimpese.</p>
       </div>
-      <div class="footer-links">
-        <a href="/#accueil">Accueil</a>
-        <a href="/#actualites">Actualités</a>
-        <a href="/inscription.html">Inscription à distance</a>
-        <a href="/#contact">Contact</a>
-      </div>
-      <div class="social-links" id="socialLinks"></div>
+      <nav class="footer-nav">
+        <div class="footer-col"><h3>Liens rapides</h3><ul><li><a href="/">Accueil</a></li><li><a href="/#actualites">Actualités</a></li><li><a href="/inscription.html">Inscriptions</a></li><li><a href="/#contact">Contact</a></li></ul></div>
+        <div class="footer-col"><h3>Catégories</h3><ul><li><a href="/#actualites">Annonces</a></li><li><a href="/#actualites">Académique</a></li><li><a href="/#actualites">Sport</a></li><li><a href="/#actualites">Culture</a></li></ul></div>
+        <div class="footer-col"><h3>Contact</h3><ul><li id="footerEmail"><span>✉</span> <a href="mailto:"></a></li><li id="footerPhone"><span>☎</span> <a href="tel:"></a></li></ul></div>
+      </nav>
     </div>
-    <div class="container footer-bottom">
-      <p id="copyright"></p>
-    </div>
+    <div class="footer-bottom"><div class="container footer-bottom-inner"><p id="copyright"></p><p class="footer-credits">Site conçu par <a href="https://github.com/Jhoyby" target="_blank" rel="noopener">Jhoyby</a></p></div></div>
   </footer>
 
   <script src="/js/article.js"></script>
