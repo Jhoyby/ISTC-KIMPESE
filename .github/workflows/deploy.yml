@@ -25,20 +25,22 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Prepare static bundle (public + data + uploads)
+      - name: Prepare static bundle (public data snapshot + uploads)
         run: |
-          mkdir -p dist
-          cp -r public/* dist/
-          mkdir -p dist/data
-          cp -r data/*.json dist/data/ || true
-          mkdir -p dist/uploads
-          cp -r uploads/* dist/uploads/ || true
-          touch dist/.nojekyll
+          mkdir -p public/data public/uploads
+          cp data/settings.json data/articles.json data/ads.json data/partners.json public/data/ || true
+          cp uploads/* public/uploads/ || true
+          touch public/.nojekyll
+          test -f public/index.html
+          test -f public/js/main.js
+          test -f public/css/style.css
+          test -f public/data/articles.json
+          ls public | head -30
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist/'
+          path: './public/'
 
   deploy:
     needs: build

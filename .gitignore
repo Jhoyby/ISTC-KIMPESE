@@ -4,6 +4,8 @@ node_modules/
 static/
 _site/
 .uploads/
+public/data/registrations.json
+public/uploads/
 .DS_Store
 Thumbs.db
 *.bat
