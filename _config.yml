@@ -1,0 +1,31 @@
+title: ISTC Kimpese News
+description: Institut Supérieur de Techniques Commerciales - Kimpese
+base_url: /ISTC-KIMPESE
+permalink: pretty
+gems: [jekyll-feed]
+exclude: [".github", "node_modules", "server.js", "data", "functions", "uploads"]
+source: public
+destination: _site
+timezone: Africa/Lubumbashi
+markdown: kramdown
+highlighter: rouge
+logo: /images/logo.png
+favicon: /favicon.ico
+google_analytics: ""
+social:
+  name: ISTC Kimpese
+  url: https://github.com/Jhoyby/ISTC-KIMPESE
+  twitter: ""
+  facebook: ""
+locale: fr_FR
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

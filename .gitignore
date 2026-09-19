@@ -1,3 +1,17 @@
 node_modules/
 *.log
 .env
+static/
+_site/
+.uploads/
+.DS_Store
+Thumbs.db
+*.bat
+*.py
+verify.py
+setup.bat
+check.bat
+listfiles.bat
+push.bat
+status.bat
+github_commit.bat
