@@ -67,8 +67,8 @@ function requireAuth(req, res, next) {
   res.status(401).json({ error: 'Non autorisé' });
 }
 
-const MAX_IMAGE_WIDTH = 1600;
-const MAX_IMAGE_HEIGHT = 1600;
+const MAX_IMAGE_WIDTH = 800;
+const MAX_IMAGE_HEIGHT = 800;
 
 async function optimizeImage(filePath) {
   try {
@@ -80,9 +80,17 @@ async function optimizeImage(filePath) {
     if (meta.width > MAX_IMAGE_WIDTH || meta.height > MAX_IMAGE_HEIGHT) {
       pipeline.resize({ width: MAX_IMAGE_WIDTH, height: MAX_IMAGE_HEIGHT, fit: 'inside', withoutEnlargement: true });
     }
-    const outPath = filePath.replace(/\.[^/.]+$/, '') + '.webp';
-    await pipeline.webp({ quality: 80 }).toFile(outPath);
-    fs.unlinkSync(filePath);
+    const ext = path.extname(filePath);
+    const base = path.basename(filePath, ext);
+    const dir = path.dirname(filePath);
+    const outPath = path.join(dir, base + '.webp');
+    const tmpPath = path.join(dir, base + '_tmp.webp');
+    await pipeline.webp({ quality: 80 }).toFile(tmpPath);
+    try { fs.unlinkSync(filePath); } catch(e) {}
+    try { fs.renameSync(tmpPath, outPath); } catch(e) {
+      fs.copyFileSync(tmpPath, outPath);
+      fs.unlinkSync(tmpPath);
+    }
     return path.basename(outPath);
   } catch (e) {
     console.error('Erreur optimisation image', filePath, e.message);
