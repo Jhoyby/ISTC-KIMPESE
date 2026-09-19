@@ -1,5 +1,103 @@
 [
   {
+    "id": 9,
+    "title": "Rentrée académique 2026-2027 : le campus de Kimpese fait le plein",
+    "category": "Annonces",
+    "content": "L'Institut Supérieur de Techniques Commerciales de Kimpese a accueilli ses nouveaux étudiants dans une ambiance festive pour la rentrée académique 2026-2027.\n\nDès les premières heures, les différentes promotions ont pris possession du campus : inscriptions finalisées, découverte des salles de cours et rencontre avec le corps professoral.\n\nLa direction a souhaité la bienvenue aux nouveaux venus et rappelé les valeurs de l'institut : rigueur, excellence et esprit d'initiative.\n\nBonne année académique à toutes et à tous !",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840694196-7b94eb3b.webp",
+    "images": [
+      "/uploads/1789840694196-7b94eb3b.webp"
+    ],
+    "date": "2026-09-12",
+    "featured": false,
+    "published": true
+  },
+  {
+    "id": 10,
+    "title": "Travaux dirigés : les étudiants de Comptabilité en pleine révision",
+    "category": "Académique",
+    "content": "Ambiance studieuse sur le campus de l'ISTC : les étudiants de Comptabilité et Gestion multiplient les séances de travaux dirigés à l'approche des évaluations.\n\nEncadrés par leurs assistants, ils revoient les notions essentielles : comptabilité générale, fiscalité et gestion financière.\n\nLa direction pédagogique encourage ces initiatives qui renforcent la réussite académique et l'entraide entre promotions.",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840694785-cad1701b.webp",
+    "images": [
+      "/uploads/1789840694785-cad1701b.webp"
+    ],
+    "date": "2026-09-13",
+    "featured": false,
+    "published": true
+  },
+  {
+    "id": 11,
+    "title": "Vie étudiante : une pause bien méritée entre deux cours",
+    "category": "Vie étudiante",
+    "content": "Entre deux cours magistraux, les étudiants de l'ISTC profitent des espaces du campus pour échanger, réviser et partager un moment de détente.\n\nCes instants de convivialité font la richesse de la vie estudiantine à Kimpese : on y refait les débats du cours, on prépare les exposés en groupe et on tisse des amitiés durables.\n\nL'institut encourage cet esprit de communauté qui fait la fierté de ses promotions.",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840695085-62d63116.webp",
+    "images": [
+      "/uploads/1789840695085-62d63116.webp"
+    ],
+    "date": "2026-09-14",
+    "featured": false,
+    "published": true
+  },
+  {
+    "id": 12,
+    "title": "Orientation des nouveaux : les aînés accueillent les freshmen",
+    "category": "Vie étudiante",
+    "content": "Les étudiants des promotions montantes ont réservé un accueil chaleureux aux nouveaux inscrits de l'ISTC.\n\nVisite guidée du campus, présentation des filières, conseils pour réussir sa première année : les aînés ont joué pleinement leur rôle de grands frères et grandes sœurs.\n\nCette tradition d'accueil renforce la cohésion et permet aux nouveaux de s'intégrer rapidement dans la grande famille de l'institut.",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840695303-c8be7e6d.webp",
+    "images": [
+      "/uploads/1789840695303-c8be7e6d.webp"
+    ],
+    "date": "2026-09-15",
+    "featured": false,
+    "published": true
+  },
+  {
+    "id": 13,
+    "title": "Infrastructures : le campus se modernise pour la nouvelle année",
+    "category": "Annonces",
+    "content": "Bonne nouvelle pour la communauté estudiantine : plusieurs travaux de modernisation ont été réalisés sur le campus de l'ISTC pendant les vacances.\n\nSalles de cours réhabilitées, espaces de travail améliorés et cadre de vie embelli : tout est prêt pour offrir aux étudiants les meilleures conditions d'apprentissage.\n\nLa direction remercie les équipes qui ont œuvré pendant l'intersession et invite chacun à préserver ces acquis.",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840695512-cce2feb0.webp",
+    "images": [
+      "/uploads/1789840695512-cce2feb0.webp"
+    ],
+    "date": "2026-09-16",
+    "featured": false,
+    "published": true
+  },
+  {
+    "id": 14,
+    "title": "Animation culturelle : les talents du campus sur scène",
+    "category": "Culture",
+    "content": "Chants, danses, poésie et théâtre : les étudiants de l'ISTC ont montré l'étendue de leurs talents lors d'une animation culturelle organisée sur le campus.\n\nDevant un public conquis, les différentes promotions se sont succédé sur scène dans une ambiance électrique, célébrant la diversité culturelle du Kongo Central.\n\nLa cellule de communication félicite tous les artistes en herbe et donne rendez-vous pour la grande semaine culturelle de l'année.",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840695727-e14deed2.webp",
+    "images": [
+      "/uploads/1789840695727-e14deed2.webp"
+    ],
+    "date": "2026-09-17",
+    "featured": false,
+    "published": true
+  },
+  {
+    "id": 15,
+    "title": "Sport universitaire : l’équipe de l’ISTC se prépare pour la saison",
+    "category": "Sport",
+    "content": "L'équipe sportive de l'ISTC a entamé sa préparation pour la nouvelle saison des compétitions inter-universitaires.\n\nEntraînements réguliers, esprit d'équipe et fair-play : les joueurs affichent déjà une belle détermination pour défendre les couleurs de l'institut.\n\nLa cellule des activités sportives invite tous les étudiants passionnés à rejoindre les sélections. Que le meilleur gagne !",
+    "author": "Jhoyby Nzau",
+    "image": "/uploads/1789840696090-46668be3.webp",
+    "images": [
+      "/uploads/1789840696090-46668be3.webp"
+    ],
+    "date": "2026-09-18",
+    "featured": false,
+    "published": true
+  },
+  {
     "id": 3,
     "title": "Inscriptions en ligne 2026-2027 : c'est parti !",
     "category": "Annonces",
