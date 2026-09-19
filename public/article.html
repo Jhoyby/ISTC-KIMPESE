@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article — ISTC News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link id="siteFavicon" rel="icon" href="">
+  <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('istc_theme')||'light')}catch(e){}</script>
+</head>
+<body>
+  <div id="announcementBar" class="announcement-bar hidden"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand">
+        <span class="brand-mark">
+          <span class="brand-mark-text" id="brandMarkText">ISTC</span>
+          <img class="brand-mark-img hidden" id="brandMarkImg" alt="Logo">
+        </span>
+        <span class="brand-text">
+          <span class="brand-name" id="brandName">ISTC News</span>
+          <span class="brand-sub" id="brandFullName">Institut Supérieur de Techniques Commerciales</span>
+        </span>
+      </a>
+      <nav class="main-nav" id="mainNav">
+        <a href="/#accueil">Accueil</a>
+        <a href="/#actualites">Actualités</a>
+        <a href="/inscription.html">Inscription</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" title="Mode sombre / clair" aria-label="Mode sombre / clair">🌙</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="article-page-hero">
+    <div class="container">
+      <a href="/#actualites" class="back-link">← Retour aux actualités</a>
+      <span class="article-page-category" id="pageCategory"></span>
+      <h1 class="article-page-title" id="pageTitle"></h1>
+      <div class="article-page-meta">
+        <span class="avatar" id="pageAvatar">ISTC</span>
+        <span id="pageMeta"></span>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="article-layout">
+      <div class="article-page-body">
+        <img class="featured-image hidden" id="pageImage" alt="">
+        <div id="pageContent" class="loading">Chargement de l'article…</div>
+      </div>
+
+      <aside class="article-sidebar">
+        <div class="sidebar-box">
+          <h3 class="sidebar-title">À lire aussi</h3>
+          <div id="sidebarSuggestions"></div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="related-articles" id="relatedSection">
+      <h3>Articles similaires</h3>
+      <div class="articles-grid" id="relatedGrid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <img class="footer-logo hidden" id="footerLogo" alt="Logo">
+        <strong id="footerBrand">ISTC News</strong>
+        <p id="footerTagline"></p>
+      </div>
+      <div class="footer-links">
+        <a href="/#accueil">Accueil</a>
+        <a href="/#actualites">Actualités</a>
+        <a href="/inscription.html">Inscription à distance</a>
+        <a href="/#contact">Contact</a>
+      </div>
+      <div class="social-links" id="socialLinks"></div>
+    </div>
+    <div class="container footer-bottom">
+      <p id="copyright"></p>
+    </div>
+  </footer>
+
+  <script src="/js/article.js"></script>
+</body>
+</html>

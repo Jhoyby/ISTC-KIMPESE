@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1787175196454,
+    "fullName": "Jhoyby Nzau Officiel",
+    "email": "contact@istc.edu",
+    "phone": "+243897574291",
+    "birthDate": "1994-06-01",
+    "filiere": "Gestion des Ressources Humaines",
+    "paymentMethod": "Orange Money",
+    "paymentNumber": "+243897574291",
+    "paymentPin": "istc2026",
+    "cardInfo": null,
+    "amount": "15",
+    "date": "2026-08-19T21:33:16.454Z",
+    "status": "paid",
+    "admission": "admitted"
+  },
+  {
+    "id": 1787174254725,
+    "fullName": "Jhoyby Nzau Officiel",
+    "email": "contact@istc.edu",
+    "phone": "+243897574291",
+    "birthDate": "1994-01-06",
+    "filiere": "Comptabilité et Gestion",
+    "paymentMethod": "Orange Money",
+    "paymentNumber": "+243897574291",
+    "paymentPin": "istc2026",
+    "cardInfo": null,
+    "amount": "15",
+    "date": "2026-08-19T21:17:34.725Z",
+    "status": "paid"
+  }
+]

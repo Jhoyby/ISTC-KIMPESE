@@ -1,0 +1,40 @@
+type User @table {
+  email: String!
+  username: String!
+  displayName: String!
+  bio: String
+  profileImageUrl: String
+}
+
+type SiteSettings @table {
+  siteTitle: String!
+  themeColor: String!
+  tagline: String
+  socialLinks: String
+  user: User!
+}
+
+type Post @table {
+  title: String!
+  content: String!
+  status: String!
+  createdAt: Timestamp!
+  coverImageUrl: String
+  user: User!
+}
+
+type Project @table {
+  title: String!
+  description: String!
+  projectUrl: String!
+  imageUrl: String
+  tags: String
+  user: User!
+}
+
+type Comment @table {
+  content: String!
+  authorName: String!
+  createdAt: Timestamp!
+  post: Post!
+}

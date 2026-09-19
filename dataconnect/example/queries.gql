@@ -1,0 +1,144 @@
+mutation CreateUser @auth(level: USER) {
+  user_insert(data: {
+    id_expr: "auth.uid",
+    email: "user@example.com",
+    username: "newuser",
+    displayName: "New User"
+  })
+}
+
+mutation UpdateUser @auth(level: USER) {
+  user_update(key: {id_expr: "auth.uid"}, data: {displayName: "Updated Name"})
+}
+
+mutation DeleteUser @auth(level: USER) {
+  user_delete(key: {id_expr: "auth.uid"})
+}
+
+query GetCurrentUser @auth(level: USER) {
+  user(key: {id_expr: "auth.uid"}) {
+    email username displayName bio profileImageUrl
+  }
+}
+
+query ListAllUsers @auth(level: PUBLIC, insecureReason: "Public profiles are part of the platform features.") {
+  users {
+    username displayName profileImageUrl
+  }
+}
+
+mutation CreateSiteSettings @auth(level: USER) {
+  siteSettings_insert(data: {
+    siteTitle: "My Blog",
+    themeColor: "#FFFFFF",
+    user: {id_expr: "auth.uid"}
+  })
+}
+
+mutation UpdateSiteSettings($id: UUID!) @auth(level: USER) {
+  siteSettings_update(key: {id: $id}, data: {siteTitle: "Updated Title"})
+}
+
+mutation DeleteSiteSettings($id: UUID!) @auth(level: USER) {
+  siteSettings_delete(key: {id: $id})
+}
+
+query GetSiteSettings($id: UUID!) @auth(level: PUBLIC, insecureReason: "Site configuration is public.") {
+  siteSettings(id: $id) {
+    siteTitle themeColor tagline socialLinks
+  }
+}
+
+query ListSiteSettings @auth(level: PUBLIC, insecureReason: "Publicly visible site list.") {
+  siteSettingss {
+    siteTitle
+  }
+}
+
+mutation CreatePost($title: String!, $content: String!) @auth(level: USER) {
+  post_insert(data: {
+    title: $title,
+    content: $content,
+    status: "draft",
+    createdAt_time: {now: true},
+    user: {id_expr: "auth.uid"}
+  })
+}
+
+mutation UpdatePost($id: UUID!, $title: String) @auth(level: USER) {
+  post_update(key: {id: $id}, data: {title: $title})
+}
+
+mutation DeletePost($id: UUID!) @auth(level: USER) {
+  post_delete(key: {id: $id})
+}
+
+query GetPost($id: UUID!) @auth(level: PUBLIC, insecureReason: "Posts are intended to be public content.") {
+  post(id: $id) {
+    title content status createdAt
+  }
+}
+
+query ListPosts @auth(level: PUBLIC, insecureReason: "Public feed of posts.") {
+  posts {
+    title createdAt
+  }
+}
+
+mutation CreateProject($title: String!, $desc: String!, $url: String!) @auth(level: USER) {
+  project_insert(data: {
+    title: $title,
+    description: $desc,
+    projectUrl: $url,
+    user: {id_expr: "auth.uid"}
+  })
+}
+
+mutation UpdateProject($id: UUID!, $desc: String) @auth(level: USER) {
+  project_update(key: {id: $id}, data: {description: $desc})
+}
+
+mutation DeleteProject($id: UUID!) @auth(level: USER) {
+  project_delete(key: {id: $id})
+}
+
+query GetProject($id: UUID!) @auth(level: PUBLIC, insecureReason: "Project showcase is public.") {
+  project(id: $id) {
+    title description projectUrl imageUrl
+  }
+}
+
+query ListProjects @auth(level: PUBLIC, insecureReason: "Public project portfolio.") {
+  projects {
+    title projectUrl
+  }
+}
+
+mutation CreateComment($postId: UUID!, $content: String!, $author: String!) @auth(level: PUBLIC, insecureReason: "Anyone can comment on public posts.") {
+  comment_insert(data: {
+    content: $content,
+    authorName: $author,
+    createdAt_time: {now: true},
+    post: {id: $postId}
+  })
+}
+
+mutation UpdateComment($id: UUID!, $content: String) @auth(level: USER) {
+  comment_update(key: {id: $id}, data: {content: $content})
+}
+
+mutation DeleteComment($id: UUID!) @auth(level: USER) {
+  comment_delete(key: {id: $id})
+}
+
+query GetComment($id: UUID!) @auth(level: PUBLIC, insecureReason: "Publicly visible comments.") {
+  comment(id: $id) {
+    content authorName createdAt
+  }
+}
+
+query ListComments($postId: UUID!) @auth(level: PUBLIC, insecureReason: "View comments on a post.") {
+  comments(where: {postId: {eq: $postId}}) {
+    content authorName
+  }
+}

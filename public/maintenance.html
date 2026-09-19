@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maintenance — ISTC News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link id="siteFavicon" rel="icon" href="">
+  <style>
+    :root {
+      --primary: #c8102e;
+      --secondary: #f5c518;
+      --text: #1f2937;
+      --bg: #f5f6f8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 2.4rem;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    }
+    h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 12px; }
+    p { opacity: .75; max-width: 480px; line-height: 1.7; margin-bottom: 30px; }
+    .status-pill {
+      display: inline-block;
+      background: var(--secondary);
+      color: #111;
+      font-weight: 700;
+      font-size: .8rem;
+      padding: 7px 16px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+      letter-spacing: .5px;
+    }
+    #message { font-weight: 600; }
+  </style>
+  <script>
+    fetch('/api/settings').then(r => r.json()).then(s => {
+      if (s.primaryColor) document.documentElement.style.setProperty('--primary', s.primaryColor);
+      if (s.secondaryColor) document.documentElement.style.setProperty('--secondary', s.secondaryColor);
+      if (s.textColor) document.documentElement.style.setProperty('--text', s.textColor);
+      if (s.backgroundColor) document.documentElement.style.setProperty('--bg', s.backgroundColor);
+      if (s.siteName) document.title = 'Maintenance — ' + s.siteName;
+      if (s.maintenanceMessage) document.getElementById('message').textContent = s.maintenanceMessage;
+      const fav = document.getElementById('siteFavicon');
+      if (s.logoImage) fav.href = s.logoImage;
+    }).catch(() => {});
+  </script>
+</head>
+<body>
+  <div class="icon">🛠</div>
+  <span class="status-pill">MAINTENANCE EN COURS</span>
+  <h1>Le site est temporairement indisponible</h1>
+  <p id="message">Nous effectuons quelques travaux pour améliorer votre expérience. Merci de revenir dans quelques instants.</p>
+</body>
+</html>

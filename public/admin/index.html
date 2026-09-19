@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration — ISTC News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link id="siteFavicon" rel="icon" href="">
+  <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body>
+  <div id="loginScreen" class="login-screen">
+    <form class="login-card" id="loginForm">
+      <div class="login-brand">
+        <span id="loginLogoText">ISTC</span>
+        <img class="login-logo-img hidden" id="loginLogoImg" alt="Logo">
+      </div>
+      <h1>Panneau d'administration</h1>
+      <p class="login-sub">Connectez-vous pour gérer le site</p>
+      <label>Mot de passe</label>
+      <input type="password" id="loginPassword" placeholder="Entrez votre mot de passe" autocomplete="current-password">
+      <p class="form-error hidden" id="loginError"></p>
+      <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+      <a href="/" class="login-back">← Retour au site</a>
+    </form>
+  </div>
+
+  <div id="adminApp" class="admin-app hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="sidebar-logo">
+          <span id="sideLogoText">ISTC</span>
+          <img class="sidebar-logo-img hidden" id="sideLogoImg" alt="Logo">
+        </span>
+        <div>
+          <strong id="sideSiteName">ISTC News</strong>
+          <small>Administration</small>
+        </div>
+      </div>
+<nav class="sidebar-nav">
+        <button class="nav-btn active" data-tab="dashboard">Tableau de bord</button>
+        <button class="nav-btn" data-tab="articles">Articles</button>
+        <button class="nav-btn" data-tab="inscriptions">Inscriptions</button>
+        <button class="nav-btn" data-tab="apparence">Apparence</button>
+        <button class="nav-btn" data-tab="contenu">Contenu</button>
+        <button class="nav-btn" data-tab="seo">SEO & Analytics</button>
+        <button class="nav-btn" data-tab="contact">Contact & Paiements</button>
+        <button class="nav-btn" data-tab="avance">Avancé</button>
+        <button class="nav-btn" data-tab="securite">Sécurité</button>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="btn btn-outline btn-block">Voir le site</a>
+        <button id="logoutBtn" class="btn btn-danger btn-block">Déconnexion</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h2 id="pageTitle">Tableau de bord</h2>
+        <div class="topbar-right">
+          <span class="live-status" id="liveStatus">En direct</span>
+          <button class="btn btn-primary" id="saveAllBtn">💾 Enregistrer toutes les modifications</button>
+        </div>
+      </header>
+
+      <!-- Dashboard -->
+      <section class="tab-panel active" id="panel-dashboard">
+        <div class="stat-cards">
+          <div class="stat-card"><span class="stat-label">Articles publiés</span><span class="stat-value" id="statPublished">0</span></div>
+          <div class="stat-card"><span class="stat-label">Brouillons</span><span class="stat-value" id="statDrafts">0</span></div>
+          <div class="stat-card"><span class="stat-label">Inscriptions</span><span class="stat-value" id="statRegistrations">0</span></div>
+          <div class="stat-card"><span class="stat-label">Site</span><span class="stat-value" id="statSiteName">—</span></div>
+        </div>
+        <div class="card quick-actions">
+          <h3>Actions rapides</h3>
+          <div class="quick-btns">
+            <button class="btn btn-primary" data-go="articles" data-new="1">+ Nouvel article</button>
+            <button class="btn" data-go="apparence">Personnaliser les couleurs</button>
+            <button class="btn" data-go="contenu">Modifier la page d'accueil</button>
+            <button class="btn" data-go="inscriptions">Voir les inscriptions</button>
+            <a href="/" target="_blank" class="btn btn-outline btn-dark">Ouvrir le site public</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Articles -->
+      <section class="tab-panel" id="panel-articles">
+        <div class="panel-head">
+          <h3>Gestion des articles</h3>
+          <button class="btn btn-primary" id="newArticleBtn">+ Nouvel article</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Catégorie</th>
+                  <th>Date</th>
+                  <th>Auteur</th>
+                  <th>Statut</th>
+                  <th>À la une</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="articlesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inscriptions -->
+      <section class="tab-panel" id="panel-inscriptions">
+        <div class="panel-head">
+          <h3>Inscriptions à distance</h3>
+          <div class="panel-head-actions">
+            <span class="muted-note" id="regCountNote">0 inscription(s)</span>
+            <button class="btn btn-outline" id="exportRegistrationsBtn">📄 Exporter le rapport (Excel)</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Nom</th>
+                  <th>Téléphone</th>
+                  <th>Email</th>
+                  <th>Filière</th>
+                  <th>Paiement</th>
+                  <th>Montant</th>
+                  <th>Statut</th>
+                  <th>Admission</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="registrationsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apparence -->
+      <section class="tab-panel" id="panel-apparence">
+        <div class="card">
+          <h3>Logo du site</h3>
+          <p class="card-sub">Téléchargez le logo de l'institut ou laissez vide pour afficher le texte « ISTC ».</p>
+          <div class="inline-upload">
+            <input type="text" id="f-logoImage" data-field="logoImage" placeholder="URL du logo">
+            <button class="btn btn-sm upload-btn" data-target="logoImage">Uploader</button>
+          </div>
+          <div class="logo-preview" id="logoPreview"></div>
+        </div>
+
+        <div class="card">
+          <h3>Couleurs du site</h3>
+          <p class="card-sub">Modifiez les couleurs, l'aperçu s'actualise en direct sur le site public.</p>
+          <div class="color-grid" id="colorGrid">
+            <div class="color-field">
+              <label>Couleur principale</label>
+              <div class="color-input">
+                <input type="color" id="c-primaryColor" data-field="primaryColor">
+                <input type="text" id="t-primaryColor" data-field="primaryColor" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Couleur secondaire</label>
+              <div class="color-input">
+                <input type="color" id="c-secondaryColor" data-field="secondaryColor">
+                <input type="text" id="t-secondaryColor" data-field="secondaryColor" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Couleur du texte</label>
+              <div class="color-input">
+                <input type="color" id="c-textColor" data-field="textColor">
+                <input type="text" id="t-textColor" data-field="textColor" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Fond de la page</label>
+              <div class="color-input">
+                <input type="color" id="c-backgroundColor" data-field="backgroundColor">
+                <input type="text" id="t-backgroundColor" data-field="backgroundColor" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Fond du header</label>
+              <div class="color-input">
+                <input type="color" id="c-headerBackground" data-field="headerBackground">
+                <input type="text" id="t-headerBackground" data-field="headerBackground" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Texte du header</label>
+              <div class="color-input">
+                <input type="color" id="c-headerTextColor" data-field="headerTextColor">
+                <input type="text" id="t-headerTextColor" data-field="headerTextColor" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Fond du footer</label>
+              <div class="color-input">
+                <input type="color" id="c-footerBackground" data-field="footerBackground">
+                <input type="text" id="t-footerBackground" data-field="footerBackground" class="color-hex">
+              </div>
+            </div>
+            <div class="color-field">
+              <label>Texte du footer</label>
+              <div class="color-input">
+                <input type="color" id="c-footerTextColor" data-field="footerTextColor">
+                <input type="text" id="t-footerTextColor" data-field="footerTextColor" class="color-hex">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Mode sombre / clair</h3>
+          <p class="card-sub">Le visiteur peut basculer entre les deux modes grâce au bouton dans l'en-tête.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Thème par défaut</label>
+              <select id="f-defaultTheme" data-field="defaultTheme">
+                <option value="light">Clair</option>
+                <option value="dark">Sombre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <label class="check-row">
+                <input type="checkbox" id="f-enableDarkMode" data-field="enableDarkMode">
+                <span>Autoriser le bouton mode sombre/clair</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Diaporama du haut de page</h3>
+          <p class="card-sub">Les articles « À la une » sont affichés en diapositives dans le haut de la page d'accueil.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>&nbsp;</label>
+              <label class="check-row">
+                <input type="checkbox" id="f-carouselAutoPlay" data-field="carouselAutoPlay">
+                <span>Défilement automatique des diapositives</span>
+              </label>
+            </div>
+            <div class="field">
+              <label>Intervalle (secondes)</label>
+              <input type="number" id="f-carouselInterval" data-field="carouselInterval" min="2" max="20">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu -->
+      <section class="tab-panel" id="panel-contenu">
+        <div class="card">
+          <h3>Identité du site</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>Nom du site (court)</label>
+              <input type="text" id="f-siteName" data-field="siteName">
+            </div>
+            <div class="field">
+              <label>Nom complet de l'institut</label>
+              <input type="text" id="f-siteFullName" data-field="siteFullName">
+            </div>
+            <div class="field">
+              <label>Slogan / Tagline</label>
+              <input type="text" id="f-tagline" data-field="tagline">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Section d'accueil (Hero)</h3>
+          <p class="card-sub">Cette section s'affiche quand il n'y a aucun article « À la une » pour le diaporama.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Titre du hero</label>
+              <input type="text" id="f-heroTitle" data-field="heroTitle">
+            </div>
+            <div class="field">
+              <label>Texte du hero</label>
+              <textarea id="f-heroText" data-field="heroText" rows="3"></textarea>
+            </div>
+            <div class="field">
+              <label>Image de fond (URL)</label>
+              <div class="inline-upload">
+                <input type="text" id="f-heroImage" data-field="heroImage" placeholder="https://… ou laissez vide">
+                <button class="btn btn-sm upload-btn" data-target="heroImage">Uploader</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Texte du bouton</label>
+              <input type="text" id="f-heroButtonText" data-field="heroButtonText">
+            </div>
+            <div class="field">
+              <label>Lien du bouton</label>
+              <input type="text" id="f-heroButtonUrl" data-field="heroButtonUrl">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Inscriptions à distance</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>&nbsp;</label>
+              <label class="check-row">
+                <input type="checkbox" id="f-registrationOpen" data-field="registrationOpen">
+                <span>Ouvrir les inscriptions en ligne</span>
+              </label>
+            </div>
+<div class="field">
+               <label>Montant fixe d'inscription (USD ou FC)</label>
+               <input type="text" id="f-registrationAmount" data-field="registrationAmount" placeholder="Ex : 150 $ ou 300000 FC">
+               <small class="field-hint">Laissez vide pour laisser le candidat indiquer le montant.</small>
+             </div>
+             <div class="field">
+               <label>Date limite des inscriptions</label>
+               <input type="date" id="f-registrationDeadline" data-field="registrationDeadline">
+             </div>
+            <div class="field">
+              <label>Titre de la section</label>
+              <input type="text" id="f-registrationTitle" data-field="registrationTitle">
+            </div>
+            <div class="field">
+              <label>Texte de présentation</label>
+              <textarea id="f-registrationText" data-field="registrationText" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Bandeau d'annonce</h3>
+          <div class="field">
+            <label>Texte de l'annonce</label>
+            <input type="text" id="f-announcement" data-field="announcement" placeholder="Ex : Inscriptions ouvertes jusqu'au 30 septembre">
+          </div>
+          <label class="check-row">
+            <input type="checkbox" id="f-showAnnouncement" data-field="showAnnouncement">
+            <span>Afficher la bande d'annonce en haut du site</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Contact & Paiements -->
+      <section class="tab-panel" id="panel-contact">
+        <div class="card">
+          <h3>Coordonnées</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>Email de contact</label>
+              <input type="email" id="f-contactEmail" data-field="contactEmail">
+            </div>
+            <div class="field">
+              <label>Téléphone</label>
+              <input type="text" id="f-contactPhone" data-field="contactPhone">
+            </div>
+            <div class="field">
+              <label>Adresse</label>
+              <input type="text" id="f-contactAddress" data-field="contactAddress">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Emails automatiques (SMTP)</h3>
+          <p class="card-sub">Chaque candidat reçoit une confirmation par email à l'inscription et un reçu dès que le paiement est validé. L'administration reçoit une notification à chaque nouvelle inscription. Laissez vide pour désactiver l'envoi.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Hôte SMTP</label>
+              <input type="text" id="f-smtpHost" data-field="smtpHost" placeholder="smtp.gmail.com">
+            </div>
+            <div class="field">
+              <label>Port</label>
+              <input type="text" id="f-smtpPort" data-field="smtpPort" placeholder="587 (ou 465 pour SSL)">
+            </div>
+            <div class="field">
+              <label>Utilisateur</label>
+              <input type="text" id="f-smtpUser" data-field="smtpUser" placeholder="contact@istc.edu">
+            </div>
+            <div class="field">
+              <label>Mot de passe SMTP</label>
+              <input type="password" id="f-smtpPass" data-field="smtpPass" placeholder="Laisser vide pour conserver l'actuel">
+            </div>
+            <div class="field">
+              <label>Expéditeur (champ « De »)</label>
+              <input type="text" id="f-smtpFrom" data-field="smtpFrom" placeholder="ISTC &lt;contact@istc.edu&gt;">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Comptes de réception des fonds</h3>
+          <p class="card-sub">Les numéros vers lesquels l'argent des inscriptions est transféré. Ils sont communiqués aux candidats pendant le paiement.</p>
+          <div class="pay-grid">
+            <label class="check-row">
+              <input type="checkbox" id="f-orangeEnabled" data-field="orangeEnabled">
+              <img class="pay-logo" src="/images/payments/orange-money.svg" alt="">Orange Money
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="f-mpesaEnabled" data-field="mpesaEnabled">
+              <img class="pay-logo" src="/images/payments/mpesa.svg" alt="">M-Pesa
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="f-mtnEnabled" data-field="mtnEnabled">
+              <img class="pay-logo" src="/images/payments/mtn-momo.svg" alt="">MTN MoMo
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="f-airtelEnabled" data-field="airtelEnabled">
+              <img class="pay-logo" src="/images/payments/airtel-money.svg" alt="">Airtel Money
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="f-visaEnabled" data-field="visaEnabled">
+              <img class="pay-logo" src="/images/payments/visa.svg" alt="">Visa
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="f-mastercardEnabled" data-field="mastercardEnabled">
+              <img class="pay-logo" src="/images/payments/mastercard.svg" alt="">Mastercard
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="f-cryptoEnabled" data-field="cryptoEnabled">
+              <img class="pay-logo" src="/images/payments/usdt.svg" alt="">Crypto (USDT / USDC)
+            </label>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Numéro de réception Orange Money</label>
+              <input type="text" id="f-orangeNumber" data-field="orangeNumber" placeholder="+243 ...">
+            </div>
+            <div class="field">
+              <label>Titulaire du compte Orange Money</label>
+              <input type="text" id="f-orangeHolder" data-field="orangeHolder" placeholder="Nom du titulaire du compte">
+            </div>
+            <div class="field">
+              <label>Numéro de réception M-Pesa</label>
+              <input type="text" id="f-mpesaNumber" data-field="mpesaNumber" placeholder="+243 ...">
+            </div>
+            <div class="field">
+              <label>Titulaire du compte M-Pesa</label>
+              <input type="text" id="f-mpesaHolder" data-field="mpesaHolder" placeholder="Nom du titulaire du compte">
+            </div>
+            <div class="field">
+              <label>Numéro de réception MTN MoMo</label>
+              <input type="text" id="f-mtnNumber" data-field="mtnNumber" placeholder="+243 ...">
+            </div>
+            <div class="field">
+              <label>Titulaire du compte MTN MoMo</label>
+              <input type="text" id="f-mtnHolder" data-field="mtnHolder" placeholder="Nom du titulaire du compte">
+            </div>
+            <div class="field">
+              <label>Numéro de réception Airtel Money</label>
+              <input type="text" id="f-airtelNumber" data-field="airtelNumber" placeholder="+243 ...">
+            </div>
+            <div class="field">
+              <label>Titulaire du compte Airtel Money</label>
+              <input type="text" id="f-airtelHolder" data-field="airtelHolder" placeholder="Nom du titulaire du compte">
+            </div>
+            <div class="field">
+              <label>Code USSD Orange Money</label>
+              <input type="text" id="f-ussdOrangeCode" data-field="ussdOrangeCode" placeholder="#150#">
+            </div>
+            <div class="field">
+              <label>Code USSD M-Pesa</label>
+              <input type="text" id="f-ussdMpesaCode" data-field="ussdMpesaCode" placeholder="#150*00#">
+            </div>
+            <div class="field">
+              <label>Code USSD MTN MoMo</label>
+              <input type="text" id="f-ussdMtnCode" data-field="ussdMtnCode" placeholder="*126#">
+            </div>
+            <div class="field">
+              <label>Code USSD Airtel Money</label>
+              <input type="text" id="f-ussdAirtelCode" data-field="ussdAirtelCode" placeholder="*185#">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Cryptomonnaies (USDT &amp; USDC)</h3>
+          <p class="card-sub">Le candidat envoie le montant vers votre adresse, puis colle le hash de sa transaction (TXID). Vous vérifiez sur la blockchain et marquez le paiement comme payé depuis l'onglet Inscriptions.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Réseau accepté</label>
+              <input type="text" id="f-cryptoNetwork" data-field="cryptoNetwork" placeholder="Ex : TRC-20, ERC-20, BEP-20">
+            </div>
+            <div class="field">
+              <label>Adresse du portefeuille USDT</label>
+              <input type="text" id="f-usdtAddress" data-field="usdtAddress" placeholder="Adresse de réception USDT (Tether)">
+            </div>
+            <div class="field">
+              <label>Adresse du portefeuille USDC</label>
+              <input type="text" id="f-usdcAddress" data-field="usdcAddress" placeholder="Adresse de réception USDC (USD Coin)">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Réseaux sociaux</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>Facebook</label>
+              <input type="text" id="f-facebook" data-field="facebook" placeholder="https://facebook.com/…">
+            </div>
+            <div class="field">
+              <label>Twitter / X</label>
+              <input type="text" id="f-twitter" data-field="twitter" placeholder="https://twitter.com/…">
+            </div>
+            <div class="field">
+              <label>Instagram</label>
+              <input type="text" id="f-instagram" data-field="instagram" placeholder="https://instagram.com/…">
+            </div>
+            <div class="field">
+              <label>YouTube</label>
+              <input type="text" id="f-youtube" data-field="youtube" placeholder="https://youtube.com/…">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO & Analytics -->
+      <section class="tab-panel" id="panel-seo">
+        <div class="card">
+          <h3>SEO - Référencement</h3>
+          <p class="card-sub">Ces balises améliorent le référencement et l'affichage sur les réseaux sociaux.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Meta Description</label>
+              <textarea id="f-metaDescription" data-field="metaDescription" rows="3" placeholder="Description du site pour les moteurs de recherche (max 160 caractères)"></textarea>
+            </div>
+            <div class="field">
+              <label>Mots-clés (séparés par des virgules)</label>
+              <input type="text" id="f-metaKeywords" data-field="metaKeywords" placeholder="ISTC, institut, commerce, gestion, inscription, Kimpese">
+            </div>
+            <div class="field">
+              <label>Image de partage (og:image)</label>
+              <div class="inline-upload">
+                <input type="text" id="f-ogImage" data-field="ogImage" placeholder="URL de l'image pour Facebook/Twitter/LinkedIn">
+                <button class="btn btn-sm upload-btn" data-target="ogImage">Uploader</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Analytics & Suivi</h3>
+          <p class="card-sub">Ajoutez vos codes de suivi pour analyser le trafic.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Google Analytics (GA4)</label>
+              <input type="text" id="f-googleAnalyticsId" data-field="googleAnalyticsId" placeholder="G-XXXXXXXXXX ou UA-XXXXXXXXX-X">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Avancé -->
+      <section class="tab-panel" id="panel-avance">
+        <div class="card">
+          <h3>Configuration IA (Assistant rédaction)</h3>
+          <p class="card-sub">Activez l'IA pour générer, réécrire, résumer vos articles depuis l'éditeur. Supporte Ollama (local), OpenAI, Anthropic, ou toute API compatible OpenAI.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label>Fournisseur</label>
+              <select id="f-aiProvider" data-field="aiProvider">
+                <option value="ollama">Ollama (local, gratuit)</option>
+                <option value="openai">OpenAI / Compatible</option>
+                <option value="anthropic">Anthropic (via proxy OpenAI)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Modèle</label>
+              <input type="text" id="f-aiModel" data-field="aiModel" placeholder="Ex: llama3.1, gpt-4o-mini, claude-3-haiku">
+            </div>
+            <div class="field">
+              <label>URL de base (API)</label>
+              <input type="text" id="f-aiBaseUrl" data-field="aiBaseUrl" placeholder="http://localhost:11434 (Ollama) ou https://api.openai.com/v1">
+            </div>
+            <div class="field">
+              <label>Clé API</label>
+              <input type="password" id="f-aiApiKey" data-field="aiApiKey" placeholder="Laisser vide pour Ollama local">
+            </div>
+            <div class="field">
+              <label>Température (créativité 0-1)</label>
+              <input type="number" id="f-aiTemperature" data-field="aiTemperature" step="0.1" min="0" max="1" placeholder="0.7">
+            </div>
+            <div class="field">
+              <label>Max tokens (longueur max réponse)</label>
+              <input type="number" id="f-aiMaxTokens" data-field="aiMaxTokens" min="500" max="8000" placeholder="2000">
+            </div>
+          </div>
+          <div class="form-actions" style="margin-top:10px">
+            <button class="btn btn-outline" id="testAiBtn">🧪 Test de connexion</button>
+            <span class="muted-note" id="aiTestResult"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Personnalisation CSS</h3>
+          <p class="card-sub">Ajoutez du CSS personnalisé sans toucher aux fichiers. S'applique sur tout le site public.</p>
+          <div class="field">
+            <label>CSS personnalisé</label>
+            <textarea id="f-customCss" data-field="customCss" rows="8" placeholder="/* Exemple : */&#10;.hero { background: linear-gradient(45deg, #0f2b1a, #1a4a2e); }&#10;.btn-hero { border-radius: 50px; }"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Favicon</h3>
+          <p class="card-sub">Icône du navigateur (32x32 ou 16x16, .ico, .png, .svg). Laissez vide pour utiliser le logo.</p>
+          <div class="inline-upload">
+            <input type="text" id="f-favicon" data-field="favicon" placeholder="URL du favicon">
+            <button class="btn btn-sm upload-btn" data-target="favicon">Uploader</button>
+          </div>
+          <div class="logo-preview" id="faviconPreview"></div>
+        </div>
+
+        <div class="card">
+          <h3>Configuration articles</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>Articles par page</label>
+              <input type="number" id="f-articlesPerPage" data-field="articlesPerPage" min="3" max="50" placeholder="12">
+            </div>
+            <div class="field">
+              <label>Catégorie par défaut</label>
+              <input type="text" id="f-defaultCategory" data-field="defaultCategory" placeholder="Général">
+            </div>
+            <div class="field">
+              <label>Langue / Locale</label>
+              <input type="text" id="f-locale" data-field="locale" placeholder="fr-FR">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sécurité -->
+      <section class="tab-panel" id="panel-securite">
+        <div class="card">
+          <h3>Mot de passe d'administration</h3>
+          <p class="card-sub">Changez le mot de passe utilisé pour accéder à ce panneau.</p>
+          <div class="field">
+            <label>Nouveau mot de passe</label>
+            <input type="password" id="f-adminPassword" data-field="adminPassword" placeholder="Minimum 6 caractères">
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Mode maintenance</h3>
+          <p class="card-sub">Activez cette option pour afficher une page « maintenance » aux visiteurs. Le panneau d'administration reste accessible.</p>
+          <label class="check-row">
+            <input type="checkbox" id="f-maintenanceMode" data-field="maintenanceMode">
+            <span>Activer le mode maintenance</span>
+          </label>
+          <div class="field">
+            <label>Message affiché aux visiteurs</label>
+            <input type="text" id="f-maintenanceMessage" data-field="maintenanceMessage" placeholder="Nous effectuons quelques travaux…">
+          </div>
+        </div>
+      </section>
+
+      <!-- Article modal -->
+      <div class="modal hidden" id="articleModal">
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content article-modal">
+          <h3 id="articleModalTitle">Nouvel article</h3>
+          <div class="ai-assistant-bar" id="aiAssistantBar">
+            <button type="button" class="btn btn-sm btn-ai" data-ai-action="generate" title="Générer un article à partir du titre">✨ Générer</button>
+            <button type="button" class="btn btn-sm btn-ai" data-ai-action="rewrite" title="Réécrire/améliorer le contenu">✏️ Réécrire</button>
+            <button type="button" class="btn btn-sm btn-ai" data-ai-action="summarize" title="Résumer le contenu">📝 Résumer</button>
+            <button type="button" class="btn btn-sm btn-ai" data-ai-action="suggest-title" title="Suggérer des titres">💡 Titres</button>
+            <button type="button" class="btn btn-sm btn-ai" data-ai-action="suggest-category" title="Suggérer une catégorie">🏷️ Catégorie</button>
+            <span class="ai-status hidden" id="aiStatus"></span>
+          </div>
+          <div class="field">
+            <label>Titre</label>
+            <input type="text" id="a-title">
+          </div>
+          <div class="form-grid two-col">
+            <div class="field">
+              <label>Catégorie</label>
+              <input type="text" id="a-category" list="categoryList" placeholder="Ex : Vie étudiante">
+              <datalist id="categoryList"></datalist>
+            </div>
+            <div class="field">
+              <label>Auteur</label>
+              <input type="text" id="a-author">
+            </div>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="date" id="a-date">
+          </div>
+          <div class="field">
+            <label>Images (3 maximum — la 1ère sert d'aperçu)</label>
+            <div class="gallery-upload">
+              <div class="gallery-slot">
+                <label>1 · Image d'aperçu</label>
+                <div class="inline-upload">
+                  <input type="text" id="a-image1" placeholder="URL de l'image">
+                  <button class="btn btn-sm upload-btn" data-target="articleImage1">Uploader</button>
+                </div>
+                <img id="a-imagePreview1" class="image-preview hidden" alt="Aperçu">
+              </div>
+              <div class="gallery-slot">
+                <label>2 · Image de l'article</label>
+                <div class="inline-upload">
+                  <input type="text" id="a-image2" placeholder="URL de l'image (facultatif)">
+                  <button class="btn btn-sm upload-btn" data-target="articleImage2">Uploader</button>
+                </div>
+                <img id="a-imagePreview2" class="image-preview hidden" alt="Aperçu">
+              </div>
+              <div class="gallery-slot">
+                <label>3 · Image de l'article</label>
+                <div class="inline-upload">
+                  <input type="text" id="a-image3" placeholder="URL de l'image (facultatif)">
+                  <button class="btn btn-sm upload-btn" data-target="articleImage3">Uploader</button>
+                </div>
+                <img id="a-imagePreview3" class="image-preview hidden" alt="Aperçu">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Contenu</label>
+            <div class="img-insert-btns">
+              <span>Insérer une image dans le texte :</span>
+              <button type="button" class="btn btn-sm insert-img-btn" data-slot="1" disabled>🖼 Image 1</button>
+              <button type="button" class="btn btn-sm insert-img-btn" data-slot="2" disabled>🖼 Image 2</button>
+              <button type="button" class="btn btn-sm insert-img-btn" data-slot="3" disabled>🖼 Image 3</button>
+            </div>
+            <textarea id="a-content" rows="10" placeholder="Texte de l'article…"></textarea>
+          </div>
+          <div class="check-row">
+            <label class="check-row">
+              <input type="checkbox" id="a-featured">
+              <span>Article à la une (affiché dans le diaporama)</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="a-published" checked>
+              <span>Publier immédiatement</span>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-ghost" data-close-modal>Annuler</button>
+            <button class="btn btn-primary" id="saveArticleBtn">Enregistrer l'article</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast hidden" id="toast"></div>
+    </main>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" hidden>
+  <script src="/admin/js/admin.js"></script>
+</body>
+</html>

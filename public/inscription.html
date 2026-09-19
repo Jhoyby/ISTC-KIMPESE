@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inscriptions à distance à l'Institut Supérieur de Techniques Commerciales">
+  <title>Inscription à distance — ISTC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link id="siteFavicon" rel="icon" href="">
+  <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('istc_theme')||'light')}catch(e){}</script>
+</head>
+<body>
+  <div id="announcementBar" class="announcement-bar hidden"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand">
+        <span class="brand-mark">
+          <span class="brand-mark-text" id="brandMarkText">ISTC</span>
+          <img class="brand-mark-img hidden" id="brandMarkImg" alt="Logo">
+        </span>
+        <span class="brand-text">
+          <span class="brand-name" id="brandName">ISTC News</span>
+          <span class="brand-sub" id="brandFullName">Institut Supérieur de Techniques Commerciales</span>
+        </span>
+      </a>
+      <nav class="main-nav" id="mainNav">
+        <a href="/#accueil">Accueil</a>
+        <a href="/#actualites">Actualités</a>
+        <a href="/inscription.html" class="active">Inscription</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" title="Mode sombre / clair" aria-label="Mode sombre / clair">🌙</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container registration-page">
+    <div class="registration-layout">
+      <aside class="registration-info-card">
+        <h2 id="regTitle">Inscriptions à distance</h2>
+        <p id="regText"></p>
+        <div class="deadline-box" id="deadlineBox"></div>
+        <ul>
+          <li>Inscription en quelques minutes, depuis n'importe où</li>
+          <li>Paiement sécurisé en ligne</li>
+          <li>Confirmation par email et SMS</li>
+          <li>Suivi de votre dossier en temps réel</li>
+        </ul>
+        <div class="payment-methods-list">
+          <h3>Moyens de paiement acceptés</h3>
+          <div class="payment-badges" id="infoPaymentBadges"></div>
+        </div>
+      </aside>
+
+      <div class="reg-form-card">
+        <div id="regFormWrap">
+          <h2>Formulaire d'inscription</h2>
+          <form id="regForm" novalidate>
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="r-fullName">Nom complet *</label>
+                <input type="text" id="r-fullName" required placeholder="Nom et prénom">
+              </div>
+              <div class="form-field">
+                <label for="r-email">Adresse email * <small style="opacity:.65">(pour la confirmation et le reçu)</small></label>
+                <input type="email" id="r-email" required placeholder="exemple@email.com">
+              </div>
+              <div class="form-field">
+                <label for="r-phone">Téléphone *</label>
+                <input type="tel" id="r-phone" required placeholder="+243 ...">
+              </div>
+              <div class="form-field">
+                <label for="r-birthDate">Date de naissance</label>
+                <input type="date" id="r-birthDate">
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="r-filiere">Filière choisie *</label>
+              <select id="r-filiere" required>
+                <option value="">— Sélectionnez une filière —</option>
+                <option>Commerce International</option>
+                <option>Comptabilité et Gestion</option>
+                <option>Marketing et Communication</option>
+                <option>Informatique de Gestion</option>
+                <option>Gestion des Ressources Humaines</option>
+                <option>Finance et Banque</option>
+                <option>Logistique et Transport</option>
+              </select>
+            </div>
+<div class="form-field" id="amountField">
+               <label for="r-amount">Montant à payer (USD ou FC)</label>
+               <input type="text" id="r-amount" placeholder="Ex : 150 $ ou 300 000 FC">
+             </div>
+
+            <div class="form-field">
+              <label>Mode de paiement *</label>
+              <div class="payment-options" id="paymentOptions"></div>
+              <div class="reception-info hidden" id="receptionInfo"></div>
+            </div>
+
+            <div class="form-field hidden" id="mobilePayField">
+              <label id="mobilePayLabel">Numéro de téléphone du paiement</label>
+              <input type="tel" id="r-paymentNumber" placeholder="+243 ...">
+              <small class="field-hint">Une demande de paiement sera envoyée sur ce numéro. Vous validerez avec votre code secret directement sur votre téléphone — ne communiquez jamais votre code sur internet.</small>
+            </div>
+
+            <div class="form-field hidden" id="cardFields">
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label>Nom sur la carte</label>
+                  <input type="text" id="r-cardName" placeholder="NOM PRENOM">
+                </div>
+                <div class="form-field">
+                  <label>Numéro de carte</label>
+                  <input type="text" id="r-cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric">
+                </div>
+                <div class="form-field">
+                  <label>Date d'expiration</label>
+                  <input type="text" id="r-cardExp" placeholder="MM/AA" maxlength="5">
+                </div>
+                <div class="form-field">
+                  <label>CVC</label>
+                  <input type="text" id="r-cardCvc" placeholder="123" maxlength="4" inputmode="numeric">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-field hidden" id="cryptoFields">
+              <div class="crypto-box" id="cryptoBox"></div>
+              <div class="form-field">
+                <label for="r-txId">Identifiant de transaction (TXID) *</label>
+                <input type="text" id="r-txId" placeholder="Collez ici le hash de votre transaction">
+                <small class="field-hint">Envoyez le montant équivalent en USDT/USDC vers l'adresse affichée, puis collez ici l'identifiant de la transaction. L'administration vérifie et valide votre paiement.</small>
+              </div>
+            </div>
+
+            <p class="form-error hidden" id="regError"></p>
+            <button type="submit" class="btn btn-primary btn-big btn-block">Valider mon inscription</button>
+            <p style="opacity:.6;font-size:.8rem;margin-top:12px;text-align:center">
+              Vos informations sont transmises de manière sécurisée à l'administration de l'ISTC.
+            </p>
+          </form>
+        </div>
+
+        <div class="reg-success" id="regSuccess">
+          <div class="success-icon">✓</div>
+          <h2 id="successTitle">Inscription envoyée !</h2>
+          <p id="successMsg">Votre demande d'inscription a bien été enregistrée.<br>
+          Vous recevrez une confirmation par email dans les plus brefs délais.</p>
+          <br>
+          <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="ussd-modal hidden" id="ussdModal">
+    <div class="ussd-backdrop" id="ussdBackdrop"></div>
+    <div class="ussd-phone">
+      <div class="ussd-speaker"></div>
+      <div class="ussd-screen">
+        <div class="ussd-title">USSD · <span id="ussdOperator">Orange Money</span></div>
+        <div class="ussd-body" id="ussdBody"></div>
+        <div class="ussd-code" id="ussdCode">*150#</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <img class="footer-logo hidden" id="footerLogo" alt="Logo">
+        <strong id="footerBrand">ISTC News</strong>
+        <p id="footerTagline"></p>
+      </div>
+      <div class="footer-links">
+        <a href="/#accueil">Accueil</a>
+        <a href="/#actualites">Actualités</a>
+        <a href="/inscription.html">Inscription à distance</a>
+        <a href="/#contact">Contact</a>
+      </div>
+      <div class="social-links" id="socialLinks"></div>
+    </div>
+    <div class="container footer-bottom">
+      <p id="copyright"></p>
+    </div>
+  </footer>
+
+  <script src="/js/inscription.js"></script>
+</body>
+</html>

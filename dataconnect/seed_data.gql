@@ -1,0 +1,25 @@
+mutation SeedDatabase @transaction {
+  user_insertMany(data: [
+    {id: "00000000-0000-0000-0000-000000000001", email: "alice@example.com", username: "alice", displayName: "Alice"},
+    {id: "00000000-0000-0000-0000-000000000002", email: "bob@example.com", username: "bob", displayName: "Bob"},
+    {id: "00000000-0000-0000-0000-000000000003", email: "charlie@example.com", username: "charlie", displayName: "Charlie"}
+  ])
+  siteSettings_insertMany(data: [
+    {id: "10000000-0000-0000-0000-000000000001", siteTitle: "Alice's Blog", themeColor: "blue", userId: "00000000-0000-0000-0000-000000000001"},
+    {id: "10000000-0000-0000-0000-000000000002", siteTitle: "Bob's Space", themeColor: "red", userId: "00000000-0000-0000-0000-000000000002"}
+  ])
+  post_insertMany(data: [
+    {id: "20000000-0000-0000-0000-000000000001", title: "First Post", content: "Hello world", status: "published", createdAt: "2023-10-01T10:00:00Z", userId: "00000000-0000-0000-0000-000000000001"},
+    {id: "20000000-0000-0000-0000-000000000002", title: "My Journey", content: "Learning FDC", status: "draft", createdAt: "2023-10-02T12:00:00Z", userId: "00000000-0000-0000-0000-000000000001"},
+    {id: "20000000-0000-0000-0000-000000000003", title: "Tech Talk", content: "Deep dive into schema", status: "published", createdAt: "2023-10-03T09:30:00Z", userId: "00000000-0000-0000-0000-000000000002"}
+  ])
+  project_insertMany(data: [
+    {id: "30000000-0000-0000-0000-000000000001", title: "Data Connect App", description: "Awesome app", projectUrl: "https://ex.com", userId: "00000000-0000-0000-0000-000000000001"},
+    {id: "30000000-0000-0000-0000-000000000002", title: "CLI Tool", description: "Developer helper", projectUrl: "https://dev.ex.com", userId: "00000000-0000-0000-0000-000000000002"}
+  ])
+  comment_insertMany(data: [
+    {id: "40000000-0000-0000-0000-000000000001", content: "Great read!", authorName: "Guest1", createdAt: "2023-10-01T11:00:00Z", postId: "20000000-0000-0000-0000-000000000001"},
+    {id: "40000000-0000-0000-0000-000000000002", content: "Very helpful, thanks.", authorName: "Guest2", createdAt: "2023-10-01T15:00:00Z", postId: "20000000-0000-0000-0000-000000000001"},
+    {id: "40000000-0000-0000-0000-000000000003", content: "Looking forward to more.", authorName: "Guest3", createdAt: "2023-10-04T10:00:00Z", postId: "20000000-0000-0000-0000-000000000003"}
+  ])
+}

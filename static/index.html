@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Actualités et informations de l'Institut Supérieur de Techniques Commerciales">
+  <title>ISTC News — Actualités</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link id="siteFavicon" rel="icon" href="">
+  <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('istc_theme')||'light')}catch(e){}</script>
+</head>
+<body>
+  <div id="announcementBar" class="announcement-bar hidden"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand">
+        <span class="brand-mark">
+          <span class="brand-mark-text" id="brandMarkText">ISTC</span>
+          <img class="brand-mark-img hidden" id="brandMarkImg" alt="Logo">
+        </span>
+        <span class="brand-text">
+          <span class="brand-name" id="brandName">ISTC News</span>
+          <span class="brand-sub" id="brandFullName">Institut Supérieur de Techniques Commerciales</span>
+        </span>
+      </a>
+      <nav class="main-nav" id="mainNav">
+        <a href="#accueil" class="active">Accueil</a>
+        <a href="#actualites">Actualités</a>
+        <a href="#a-propos">À propos</a>
+        <a href="/inscription.html">Inscription</a>
+        <a href="#contact">Contact</a>
+        <a href="/admin/" class="nav-admin">Administration</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" title="Mode sombre / clair" aria-label="Mode sombre / clair">🌙</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero" id="accueil">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <span class="hero-eyebrow">Dernières publications</span>
+        <h1 class="hero-title">L'actualité de l'<span class="accent">ISTC</span> en direct</h1>
+        <p class="hero-sub" id="heroText">Découvrez les dernières actualités, événements et réussites de l'Institut Supérieur de Techniques Commerciales.</p>
+        <div class="hero-actions">
+          <a href="#actualites" class="btn btn-hero">Voir les actualités</a>
+          <a href="/inscription.html" class="btn btn-outline">S'inscrire à distance</a>
+        </div>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="hero-stat hero-live" id="liveWidget">
+          <span class="live-head"><span class="live-dot"></span>Dernière publication</span>
+          <a class="live-title" id="liveTitle" href="#">Chargement…</a>
+          <span class="live-meta" id="liveMeta"></span>
+        </div>
+        <div class="hero-stat">
+          <b id="statInscriptions">En ligne</b>
+          <span>Inscriptions à distance</span>
+        </div>
+        <div class="hero-stat">
+          <b id="statEst">ISTC</b>
+          <span>Institut Supérieur</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section" id="actualites">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Actualités</span>
+          <h2 class="section-title">Dernières publications</h2>
+        </div>
+        <div class="category-filter" id="categoryFilter"></div>
+      </div>
+      <div class="articles-grid" id="articlesGrid">
+        <div class="loading">Chargement des actualités…</div>
+      </div>
+    </section>
+
+    <section class="section about-section" id="a-propos">
+      <div>
+        <span class="eyebrow">À propos</span>
+        <h2 class="section-title">L'Institut Supérieur de Techniques Commerciales</h2>
+      </div>
+      <div class="about-grid">
+        <p id="aboutText">L'Institut Supérieur de Techniques Commerciales forme les futurs professionnels du commerce, de la gestion et de la communication. Nous allions excellence académique, pratique professionnelle et innovation pour préparer nos étudiants aux défis du marché.</p>
+        <ul class="about-points">
+          <li>Formation pratique orientée vers le marché de l'emploi</li>
+          <li>Corps professoral engagé et qualifié</li>
+          <li>Partenariats avec les entreprises de la place</li>
+          <li>Inscriptions à distance en quelques minutes</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section inscription-section" id="inscription">
+      <div class="inscription-card">
+        <div class="inscription-info">
+          <span class="eyebrow">Admissions ouvertes</span>
+          <h2 class="section-title" id="inscriptionTitle">Inscriptions à distance</h2>
+          <p id="inscriptionText"></p>
+          <div>
+            <span class="inscription-deadline" id="inscriptionDeadline"></span>
+          </div>
+          <div class="payment-badges" id="paymentBadges"></div>
+        </div>
+        <div class="inscription-cta">
+          <a href="/inscription.html" class="btn btn-hero btn-big">S'inscrire maintenant</a>
+          <p class="inscription-help">Paiement en ligne sécurisé</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h2 class="section-title">Contactez-nous</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <strong>Email</strong>
+          <span id="contactEmail"></span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">☎</div>
+          <strong>Téléphone</strong>
+          <span id="contactPhone"></span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <strong>Adresse</strong>
+          <span id="contactAddress"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <img class="footer-logo hidden" id="footerLogo" alt="Logo">
+        <strong id="footerBrand">ISTC News</strong>
+        <p id="footerTagline"></p>
+      </div>
+      <div class="footer-links">
+        <a href="#accueil">Accueil</a>
+        <a href="#actualites">Actualités</a>
+        <a href="#a-propos">À propos</a>
+        <a href="/inscription.html">Inscription à distance</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="social-links" id="socialLinks"></div>
+    </div>
+    <div class="container footer-bottom">
+      <p id="copyright"></p>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

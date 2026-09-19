@@ -1,0 +1,8 @@
+[build]
+  command = "echo 'Site statique ISTC News'"
+  publish = "static"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page introuvable — ISTC News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link id="siteFavicon" rel="icon" href="">
+  <style>
+    :root {
+      --primary: #c8102e;
+      --secondary: #f5c518;
+      --text: #1f2937;
+      --bg: #f5f6f8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .code {
+      font-size: 7rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--primary);
+      letter-spacing: 4px;
+    }
+    .code span { color: var(--secondary); }
+    h1 { font-size: 1.6rem; margin: 18px 0 10px; font-weight: 800; }
+    p { opacity: .75; max-width: 460px; margin-bottom: 30px; line-height: 1.7; }
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 13px 30px;
+      border-radius: 10px;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); opacity: .92; }
+    #siteName { font-weight: 800; }
+  </style>
+  <script>
+    fetch('/api/settings').then(r => r.json()).then(s => {
+      if (s.primaryColor) document.documentElement.style.setProperty('--primary', s.primaryColor);
+      if (s.secondaryColor) document.documentElement.style.setProperty('--secondary', s.secondaryColor);
+      if (s.textColor) document.documentElement.style.setProperty('--text', s.textColor);
+      if (s.backgroundColor) document.documentElement.style.setProperty('--bg', s.backgroundColor);
+      if (s.siteName) document.getElementById('siteName').textContent = s.siteName;
+      const fav = document.getElementById('siteFavicon');
+      if (s.logoImage) fav.href = s.logoImage;
+      document.title = 'Page introuvable — ' + s.siteName;
+    }).catch(() => {});
+  </script>
+</head>
+<body>
+  <div class="code">4<span>0</span>4</div>
+  <h1>Page introuvable</h1>
+  <p>La page que vous recherchez n'existe pas ou a été déplacée. Retournez à l'accueil pour continuer votre visite sur <strong id="siteName">ISTC News</strong>.</p>
+  <a class="btn" href="/">← Retour à l'accueil</a>
+</body>
+</html>

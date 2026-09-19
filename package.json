@@ -1,0 +1,17 @@
+{
+  "name": "istc-news",
+  "version": "1.0.0",
+  "description": "Site d'actualité moderne pour l'Institut Supérieur de Techniques Commerciales (ISTC)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
+    "express": "^4.19.2",
+    "multer": "^2.0.2",
+    "nodemailer": "^9.0.5",
+    "sharp": "^0.35.3"
+  }
+}
