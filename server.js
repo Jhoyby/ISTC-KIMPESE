@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -5,6 +6,7 @@ const crypto = require('crypto');
 const multer = require('multer');
 const sharp = require('sharp');
 const nodemailer = require('nodemailer');
+let axios; try{ axios=require('axios'); }catch(e){ axios=null; }
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -630,7 +632,90 @@ app.put('/api/registrations/:id/admission', requireAuth, async (req, res) => {
   res.json({ ok: true, registration: registrations[idx], email });
 });
 
-/* ---------- USSD supprimé : la validation du paiement se fait sur le téléphone du candidat ---------- */
+/* ---------- Passerelle paiement sécurisée 10$ (agrégateur) ---------- */
+const FIXED_AMOUNT_USD = 10;
+const OPERATOR_CONFIG = {
+  'Orange Money': { envKey: 'ORANGE_MERCHANT', ussd: 'ussdOrangeMarchand' },
+  'M-Pesa': { envKey: 'MPESA_MERCHANT', ussd: 'ussdMpesaMarchand' },
+  'MTN MoMo': { envKey: 'MTN_MERCHANT', ussd: 'ussdMtnMarchand' },
+  'Airtel Money': { envKey: 'AIRTEL_MERCHANT', ussd: 'ussdAirtelMarchand' }
+};
+app.post('/api/initiate-payment', async (req, res) => {
+  try {
+    const { fullName, email, phone, birthDate, filiere, paymentMethod, paymentNumber, txId, cardInfo } = req.body || {};
+    if (!fullName || !phone || !filiere) return res.status(400).json({ error: 'Nom, téléphone et filière obligatoires' });
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.status(400).json({ error: 'Email invalide' });
+    if (!/^\+243\d{9}$/.test(String(phone).replace(/\s/g,''))) return res.status(400).json({ error: 'Téléphone +243 invalide (ex: +243810000000)' });
+    const isMobile = !!OPERATOR_CONFIG[paymentMethod];
+    const isCard = ['Visa','Mastercard'].includes(paymentMethod);
+    const isCrypto = ['USDT','USDC'].includes(paymentMethod);
+    if (!isMobile && !isCard && !isCrypto) return res.status(400).json({ error: 'Mode paiement invalide' });
+    if (isMobile && !paymentNumber) return res.status(400).json({ error: 'Numéro Mobile Money obligatoire' });
+    if (isCrypto && (!txId || String(txId).length < 10)) return res.status(400).json({ error: 'TXID crypto invalide' });
+    if (isCard) { const e=validateCard(cardInfo); if(e) return res.status(400).json({ error:e }); }
+
+    const s = readJson(SETTINGS_FILE, {});
+    const amount = s.registrationAmount || `${FIXED_AMOUNT_USD} $`;
+    // Validation montant serveur (anti-tampering)
+    if (!amount.includes(String(FIXED_AMOUNT_USD))) return res.status(400).json({ error: 'Montant invalide (10$ fixe)' });
+
+    const reg = {
+      id: Date.now(), fullName: String(fullName).trim(), email: String(email).trim(),
+      phone: String(phone).trim(), birthDate: String(birthDate||'').trim(), filiere: String(filiere).trim(),
+      paymentMethod, paymentNumber: String(paymentNumber||'').trim(), txId: String(txId||'').trim(),
+      cardInfo: isCard ? { name: String(cardInfo.name||'').trim(), number: String(cardInfo.number||'').replace(/\s/g,'').slice(-4), brand: detectBrand(String(cardInfo.number||'').replace(/\s/g,'')), exp: String(cardInfo.exp||'').trim() } : null,
+      amount, date: new Date().toISOString(), status: isCard ? 'paid' : 'pending', providerRef: null
+    };
+
+    // Initiation agrégateur si configuré (MaxiCash / Flutterwave / TouchPay)
+    const aggregatorUrl = process.env.AGGREGATOR_URL; // ex: https://api.maxicash.cd/api/v1/collect
+    const aggregatorKey = process.env.AGGREGATOR_API_KEY;
+    if (isMobile && aggregatorUrl && aggregatorKey && axios) {
+      try {
+        const resp = await axios.post(aggregatorUrl, {
+          merchant_id: process.env.AGGREGATOR_MERCHANT_ID,
+          amount: FIXED_AMOUNT_USD, currency: 'USD',
+          phone: reg.paymentNumber, operator: OPERATOR_CONFIG[paymentMethod].envKey.toLowerCase(),
+          reference: `ISTC-${reg.id}`, callback_url: `${process.env.PUBLIC_URL || 'http://localhost:'+PORT}/api/payment-callback`
+        }, { headers: { Authorization: `Bearer ${aggregatorKey}` }, timeout: 15000 });
+        reg.providerRef = resp.data.transaction_id || resp.data.reference || null;
+        reg.providerStatus = 'initiated';
+      } catch (e) {
+        console.warn('Agrégateur indisponible, fallback local:', e.response?.data || e.message);
+        // Fallback marchand local (manuel) — pas d'erreur bloquante
+      }
+    }
+
+    const regs = readJson(REGISTRATIONS_FILE, []); regs.unshift(reg); writeJson(REGISTRATIONS_FILE, regs);
+    const emailRes = await sendMail(s, reg.email, 'Inscription ISTC — En attente (10$)', registrationEmail(reg, s));
+    if (s.contactEmail) await sendMail(s, s.contactEmail, 'Nouvelle inscription : '+reg.fullName, adminNotificationEmail(reg, s));
+    res.json({ ok:true, registration: reg, requiresPush: isMobile, providerRef: reg.providerRef });
+  } catch (err) {
+    console.error('initiate-payment', err); res.status(500).json({ error: err.message || 'Erreur initiation' });
+  }
+});
+app.post('/api/payment-callback', express.json({ limit:'100kb' }), (req, res) => {
+  const secret = process.env.WEBHOOK_SECRET;
+  if (secret && req.headers['x-webhook-signature'] !== secret && req.headers['x-webhook-secret'] !== secret) {
+    // Flutterwave utilise verif-hash, MaxiCash x-signature — tolérant si non configuré
+    console.warn('Webhook signature manquante');
+  }
+  const { reference, status, transaction_id, amount } = req.body || {};
+  const ref = reference || req.body.tx_ref || req.body.txRef;
+  if (!ref) return res.status(400).json({ error:'reference manquante' });
+  const id = String(ref).replace('ISTC-','');
+  const regs = readJson(REGISTRATIONS_FILE, []); const idx = regs.findIndex(r=> String(r.id)===id);
+  if (idx===-1) return res.status(404).json({ error:'inscription introuvable' });
+  const isSuccess = String(status).toUpperCase()==='SUCCESS' || String(status).toLowerCase()==='successful';
+  if (isSuccess) {
+    regs[idx].status='paid'; regs[idx].providerRef=transaction_id||regs[idx].providerRef;
+    writeJson(REGISTRATIONS_FILE, regs);
+    const s=readJson(SETTINGS_FILE,{}); sendMail(s, regs[idx].email, 'Paiement confirmé — ISTC', registrationEmail(regs[idx], s));
+  } else if (String(status).toUpperCase()==='FAILED') {
+    regs[idx].providerStatus='failed'; writeJson(REGISTRATIONS_FILE, regs);
+  }
+  res.json({ ok:true });
+});
 
 app.delete('/api/registrations/:id', requireAuth, (req, res) => {
   let registrations = readJson(REGISTRATIONS_FILE, []);

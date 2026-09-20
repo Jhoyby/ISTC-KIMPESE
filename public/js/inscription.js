@@ -443,7 +443,7 @@
       phone,
       birthDate: $('#r-birthDate').value,
       filiere,
-      amount: $('#r-amount').value.trim(),
+      amount: '10 $',
       paymentMethod: selectedPayment,
       paymentNumber: isMobile ? $('#r-paymentNumber').value.trim() : '',
       txId: isCrypto ? $('#r-txId').value.trim() : '',
@@ -455,14 +455,20 @@
       }
     };
 
+    // Affichage attente type BetPawa
+    const submitBtn = e.target.querySelector('button[type=submit]');
+    const prevText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '⏳ Envoi Push USSD...'; }
+    $('#regError').classList.add('hidden');
     try {
-      const res = await fetch('/api/registrations', {
+      const res = await fetch('/api/initiate-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'envoi');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = prevText; }
 
       if (isMobile) {
         openPaymentPrompt(data.registration);
@@ -477,6 +483,8 @@
       $('#regSuccess').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
+      const submitBtn2 = e.target.querySelector('button[type=submit]');
+      if (submitBtn2) { submitBtn2.disabled = false; submitBtn2.textContent = 'Valider mon inscription'; }
       $('#regError').textContent = err.message;
       $('#regError').classList.remove('hidden');
     }
