@@ -4,15 +4,26 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
-const sharp = require('sharp');
+let sharp; try{ sharp=require('sharp'); }catch(e){ console.warn('sharp indisponible — optimisation images désactivée'); sharp=null; }
 const nodemailer = require('nodemailer');
 let axios; try{ axios=require('axios'); }catch(e){ axios=null; }
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const DATA_DIR = path.join(__dirname, 'data');
-const UPLOAD_DIR = path.join(__dirname, 'uploads');
+const IS_VERCEL = !!process.env.VERCEL;
+const DATA_DIR = IS_VERCEL ? path.join('/tmp', 'data') : path.join(__dirname, 'data');
+const UPLOAD_DIR = IS_VERCEL ? path.join('/tmp', 'uploads') : path.join(__dirname, 'uploads');
+// Prépare /tmp sur Vercel (FS lecture seule ailleurs)
+try { require('fs').mkdirSync(DATA_DIR, { recursive: true }); require('fs').mkdirSync(UPLOAD_DIR, { recursive: true });
+  if (IS_VERCEL) {
+    const srcData = path.join(__dirname, 'data');
+    for (const f of ['settings.json','articles.json','registrations.json','team.json']) {
+      const src = path.join(srcData, f); const dest = path.join(DATA_DIR, f);
+      if (require('fs').existsSync(src) && !require('fs').existsSync(dest)) require('fs').copyFileSync(src, dest);
+    }
+  }
+} catch(e) {}
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ARTICLES_FILE = path.join(DATA_DIR, 'articles.json');
 const REGISTRATIONS_FILE = path.join(DATA_DIR, 'registrations.json');
@@ -66,6 +77,7 @@ const MAX_IMAGE_WIDTH = 800;
 const MAX_IMAGE_HEIGHT = 800;
 
 async function optimizeImage(filePath) {
+  if (!sharp) return path.basename(filePath);
   try {
     const meta = await sharp(filePath, { failOn: 'none' }).metadata();
     if (!meta || !meta.width || !meta.format || ['svg', 'gif'].includes(meta.format)) {
