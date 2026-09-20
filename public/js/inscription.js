@@ -366,18 +366,20 @@
 
   function finishPaymentFlow(validated) {
     $('#ussdModal').classList.add('hidden');
+    const icon = document.getElementById('successIcon');
+    if (icon) { icon.textContent = '⏳'; icon.style.background = 'rgba(245,158,11,0.15)'; icon.style.color = '#d97706'; }
     if (validated) {
-      $('#successTitle').textContent = 'Paiement en cours de vérification';
-      $('#successMsg').innerHTML = 'Merci ! Dès réception effective des fonds sur le compte de l\'institut, votre inscription sera <strong>confirmée</strong> et un reçu vous sera envoyé par email.';
+      $('#successTitle').textContent = 'Paiement en attente — Inscription enregistrée';
+      $('#successMsg').innerHTML = 'Votre inscription est bien enregistrée avec statut <b style="color:#d97706">En attente</b> (10 $ — ' + escapeHtml(payRequestReg.paymentMethod) + ').<br>Vous avez indiqué avoir confirmé le PIN sur votre téléphone. L\'administration vérifie la réception sur le compte marchand et validera votre paiement. Vous recevrez le reçu par email dès confirmation.';
     } else {
       const codeMap = {
-        'Orange Money': settings.ussdOrangeCode || '*150#',
-        'M-Pesa': settings.ussdMpesaCode || '*150*00#',
-        'MTN MoMo': settings.ussdMtnCode || '*126#',
-        'Airtel Money': settings.ussdAirtelCode || '*185#'
+        'Orange Money': settings.ussdOrangeMarchand || settings.ussdOrangeCode || '*144*1#',
+        'M-Pesa': settings.ussdMpesaMarchand || settings.ussdMpesaCode || '*150*00#',
+        'MTN MoMo': settings.ussdMtnMarchand || settings.ussdMtnCode || '*135*5#',
+        'Airtel Money': settings.ussdAirtelMarchand || settings.ussdAirtelCode || '*500*2#'
       };
-      $('#successTitle').textContent = 'Inscription enregistrée !';
-      $('#successMsg').innerHTML = 'Votre inscription est enregistrée mais le paiement est en attente.<br>Vous pouvez composer <strong>' + codeMap[payRequestReg.paymentMethod] + '</strong> sur votre téléphone pour retrouver la demande de paiement. Contactez l\'administration en cas de difficulté.';
+      $('#successTitle').textContent = 'Inscription enregistrée — Paiement en attente';
+      $('#successMsg').innerHTML = 'Votre inscription est enregistrée mais <b style="color:#d97706">paiement non confirmé</b>.<br>Pour finaliser, composez <strong>' + escapeHtml(codeMap[payRequestReg.paymentMethod]) + '</strong> sur votre téléphone → Paiement marchand ISTC (10 $) → validez avec votre PIN. L\'admin confirmera ensuite.';
     }
     $('#regFormWrap').classList.add('hidden');
     $('#regSuccess').classList.add('show');
@@ -468,10 +470,9 @@
       }
 
       const paid = data.registration && data.registration.status === 'paid';
-      $('#successTitle').textContent = paid ? 'Paiement confirmé !' : (isCrypto ? 'Inscription enregistrée — paiement en vérification' : 'Inscription enregistrée !');
-      $('#successMsg').innerHTML = paid
-        ? 'Votre paiement par carte a été <strong>accepté</strong> et votre inscription est validée.<br>Un reçu vient de vous être envoyé par email.'
-        : 'Votre transaction <strong>' + escapeHtml(selectedPayment) + '</strong> a été enregistrée.<br>L\'administration va vérifier la transaction sur la blockchain et confirmera votre paiement par email.';
+      const icon2 = document.getElementById('successIcon');
+      if (paid) { if(icon2){ icon2.textContent='✓'; icon2.style.background='rgba(22,163,74,0.12)'; icon2.style.color='#16a34a'; } $('#successTitle').textContent='Paiement confirmé !'; $('#successMsg').innerHTML='Votre paiement par carte a été <strong>accepté</strong> et votre inscription est validée.<br>Un reçu vient de vous être envoyé par email.'; }
+      else { if(icon2){ icon2.textContent='⏳'; icon2.style.background='rgba(245,158,11,0.15)'; icon2.style.color='#d97706'; } $('#successTitle').textContent='Inscription enregistrée — En attente de vérification'; $('#successMsg').innerHTML='Votre transaction <strong>' + escapeHtml(selectedPayment) + '</strong> est enregistrée avec statut <b style="color:#d97706">En attente</b> (10 $).<br>L\'administration va vérifier et confirmera par email.'; }
       $('#regFormWrap').classList.add('hidden');
       $('#regSuccess').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });

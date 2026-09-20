@@ -127,12 +127,8 @@
                 <option>Logistique et Transport</option>
               </select>
             </div>
-<div class="form-field" id="amountField">
-                <label>Montant à payer (fixe)</label>
-                <div class="fixed-amount-box" id="fixedAmountBox">10 $</div>
-                <input type="hidden" id="r-amount" value="10 $">
-                <small class="field-hint">Frais d'inscription fixes — modifiables uniquement par l'admin.</small>
-              </div>
+              <input type="hidden" id="r-amount" value="10 $">
+              <div id="fixedAmountBox" class="hidden">10 $</div>
 
             <div class="betpawa-cashier">
               <div class="betpawa-cashier-header">
@@ -197,10 +193,9 @@
         </div>
 
         <div class="reg-success" id="regSuccess">
-          <div class="success-icon">✓</div>
-          <h2 id="successTitle">Inscription envoyée !</h2>
-          <p id="successMsg">Votre demande d'inscription a bien été enregistrée.<br>
-          Vous recevrez une confirmation par email dans les plus brefs délais.</p>
+          <div class="success-icon" id="successIcon">⏳</div>
+          <h2 id="successTitle">En attente</h2>
+          <p id="successMsg">Votre inscription est en attente.</p>
           <br>
           <a href="/" class="btn btn-primary">Retour à l'accueil</a>
         </div>
