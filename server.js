@@ -51,18 +51,10 @@ const upload = multer({
   }
 });
 
-function readJson(file, fallback) {
-  try {
-    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
-  } catch (e) {
-    console.error('Erreur lecture JSON', file, e.message);
-  }
-  return fallback;
-}
+const { readJson, writeJson, EXTERNAL_ENABLED } = require('./server/db');
 
-function writeJson(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
-}
+// Compat: garde fonctions locales pour fallback JSON
+// readJson/writeJson importés depuis server/db.js
 
 function requireAuth(req, res, next) {
   const token = (req.headers.authorization || '').replace('Bearer ', '');
