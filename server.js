@@ -742,6 +742,54 @@ app.post('/api/ai/generate', requireAuth, async (req, res) => {
   }
 });
 
+/* ---------- Chat assistant (gratuit avec fallback local) ---------- */
+function fallbackReply(message, s) {
+  const q = String(message || '').toLowerCase();
+  const name = s.siteName || 'ISTC Kimpese';
+  if (/(inscrip|admission|s'inscrire|paiement|orange|m-pesa|mpesa|visa|frais)/.test(q)) {
+    return `Pour vous inscrire à ${name} :\n• Allez sur "Inscriptions" (menu en haut)\n• Remplissez le formulaire (nom, email, téléphone, filière)\n• Payez en ligne : Orange Money, M-Pesa, MTN, Airtel, Visa/Mastercard ou crypto\n• Vous recevez un email de confirmation\nDate limite : ${s.registrationDeadline || 'voir page inscription'}. Besoin d'aide pour le formulaire ?`;
+  }
+  if (/(filière|formation|option|commerce|gestion|marketing|informatique|rh)/.test(q)) {
+    return `${name} propose plusieurs filières : Commerce, Gestion, Marketing, Informatique, etc. Précisez la filière qui vous intéresse et je vous explique les débouchés et la procédure d'inscription.`;
+  }
+  if (/(contact|adresse|téléphone|email|facebook|joindre)/.test(q)) {
+    return `Contact ${name} :\n• Email : ${s.contactEmail || 'contact@istc.edu'}\n• Tél : ${s.contactPhone || '+243 815185297'}\n• Adresse : ${s.contactAddress || 'Kimpese, Kongo Central'}\n• Facebook : ${s.facebook || 'page officielle ISTC'}`;
+  }
+  if (/(actualit|article|news|événement)/.test(q)) {
+    return `Les actualités sont sur la page d'accueil (section "Dernières actualités"). Vous pouvez filtrer par catégorie : Annonces, Académique, Sport, Culture, etc. Dites-moi quel sujet vous intéresse !`;
+  }
+  if (/(horaires|cours|rentrée|année)/.test(q)) {
+    return `Pour les horaires, la rentrée et le calendrier académique, consultez la section Actualités ou contactez l'administration au ${s.contactPhone || '+243 815185297'}.`;
+  }
+  if (/(bonjour|salut|hello|bienvenue)/.test(q)) {
+    return `Bonjour ! 👋 Je suis l'assistant virtuel gratuit de ${name}. Je peux vous aider pour : inscriptions, filières, actualités, contacts, paiements. Posez votre question !`;
+  }
+  return `Merci pour votre message ! Je suis l'assistant de ${name}. Je peux vous renseigner sur les inscriptions, les filières, les actualités et les contacts. Reformulez votre question avec un mot-clé (ex: "inscription", "filière commerce", "contact") et je vous réponds tout de suite.`;
+}
+
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message } = req.body || {};
+    if (!message || String(message).trim().length < 2) {
+      return res.status(400).json({ error: 'Message trop court' });
+    }
+    const s = readJson(SETTINGS_FILE, {});
+    const systemPrompt = `Tu es l'assistant virtuel gratuit du site ISTC Kimpese (${s.siteFullName || s.siteName}). Réponds uniquement en français, de manière utile, polie et concise (2-5 phrases). Tu peux répondre sur l'institut, les actualités, les inscriptions, les filières, les contacts, le site. Si tu ne sais pas, dis-le honnêtement. Ne parle pas d'autres sujets.`;
+    try {
+      const result = await callAI(message, systemPrompt, s);
+      if (result && String(result).trim()) return res.json({ ok: true, result: String(result).trim(), source: 'ai' });
+      throw new Error('Réponse vide');
+    } catch (aiErr) {
+      console.warn('IA indisponible, fallback local:', aiErr.message);
+      const fallback = fallbackReply(message, s);
+      return res.json({ ok: true, result: fallback, source: 'fallback', note: aiErr.message });
+    }
+  } catch (err) {
+    console.error('Chat error:', err);
+    res.status(500).json({ error: err.message || 'Erreur assistant' });
+  }
+});
+
 app.use((err, req, res, next) => {
   if (err) return res.status(400).json({ error: err.message });
   next();
