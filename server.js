@@ -22,8 +22,16 @@ try { require('fs').mkdirSync(DATA_DIR, { recursive: true }); require('fs').mkdi
       const src = path.join(srcData, f); const dest = path.join(DATA_DIR, f);
       if (require('fs').existsSync(src) && !require('fs').existsSync(dest)) require('fs').copyFileSync(src, dest);
     }
+    // Copie uploads seed vers /tmp/uploads pour servir /uploads/*
+    const srcUploads = path.join(__dirname, 'uploads');
+    if (require('fs').existsSync(srcUploads)) {
+      for (const f of require('fs').readdirSync(srcUploads)) {
+        const src = path.join(srcUploads, f); const dest = path.join(UPLOAD_DIR, f);
+        if (require('fs').statSync(src).isFile() && !require('fs').existsSync(dest)) require('fs').copyFileSync(src, dest);
+      }
+    }
   }
-} catch(e) {}
+} catch(e) { console.warn('init tmp', e.message); }
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ARTICLES_FILE = path.join(DATA_DIR, 'articles.json');
 const REGISTRATIONS_FILE = path.join(DATA_DIR, 'registrations.json');
