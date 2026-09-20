@@ -8,9 +8,9 @@ function readJson(file, fallback){
 }
 function writeJson(file,data){ fs.writeFileSync(file, JSON.stringify(data,null,2),'utf8'); }
 
-// Détection externe
-const DB_PROVIDER=(process.env.DB_PROVIDER||'').toLowerCase(); // mongodb | postgres | firebase | supabase
-const EXTERNAL_ENABLED=!!(process.env.DATABASE_URL || process.env.MONGODB_URI || DB_PROVIDER);
+// Détection externe — désactivé sur Vercel si pas configuré (fallback /tmp JSON)
+const DB_PROVIDER=(process.env.DB_PROVIDER||'').toLowerCase();
+const EXTERNAL_ENABLED=!!(process.env.DATABASE_URL || process.env.MONGODB_URI || (DB_PROVIDER && DB_PROVIDER!=='json'));
 
 let mongoClient=null, pgPool=null, firebaseApp=null;
 
