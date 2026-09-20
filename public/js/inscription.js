@@ -158,10 +158,10 @@
   ];
 
   const OPERATOR_LABELS = {
-    'Orange Money': { num: 'orangeNumber', holder: 'orangeHolder' },
-    'M-Pesa': { num: 'mpesaNumber', holder: 'mpesaHolder' },
-    'MTN MoMo': { num: 'mtnNumber', holder: 'mtnHolder' },
-    'Airtel Money': { num: 'airtelNumber', holder: 'airtelHolder' }
+    'Orange Money': { num: 'orangeNumber', holder: 'orangeHolder', march: 'orangeMerchant', marchName: 'orangeMerchantName', ussdMarch: 'ussdOrangeMarchand', ussd: 'ussdOrangeCode' },
+    'M-Pesa': { num: 'mpesaNumber', holder: 'mpesaHolder', march: 'mpesaMerchant', marchName: 'mpesaMerchantName', ussdMarch: 'ussdMpesaMarchand', ussd: 'ussdMpesaCode' },
+    'MTN MoMo': { num: 'mtnNumber', holder: 'mtnHolder', march: 'mtnMerchant', marchName: 'mtnMerchantName', ussdMarch: 'ussdMtnMarchand', ussd: 'ussdMtnCode' },
+    'Airtel Money': { num: 'airtelNumber', holder: 'airtelHolder', march: 'airtelMerchant', marchName: 'airtelMerchantName', ussdMarch: 'ussdAirtelMarchand', ussd: 'ussdAirtelCode' }
   };
 
   function methodType(name) {
@@ -200,11 +200,18 @@
     if (mobile) {
       const labels = OPERATOR_LABELS[method];
       $('#mobilePayLabel').textContent = 'Votre numéro ' + method;
-      $('#r-paymentNumber').placeholder = settings[labels.num] || '+243 ...';
+      $('#r-paymentNumber').placeholder = '+243 ...';
+      const march = settings[labels.march];
+      const marchName = settings[labels.marchName] || 'ISTC Kimpese';
+      const ussdMarch = settings[labels.ussdMarch] || '';
       const number = settings[labels.num];
       const holder = settings[labels.holder];
-      if (number || holder) {
-        info.innerHTML = '💸 Le montant sera transféré sur le compte <strong>' + escapeHtml(holder || 'officiel de l\'institut') + '</strong>' + (number ? ' — <strong>' + escapeHtml(number) + '</strong>' : '') + '.';
+      // Norme marchand prioritaire, fallback perso
+      if (march) {
+        info.innerHTML = '🏪 Paiement marchand <b>' + escapeHtml(method) + '</b> → <strong>' + escapeHtml(marchName) + '</strong> — Code marchand : <strong>' + escapeHtml(march) + '</strong>' + (ussdMarch ? ' (USSD marchand <b>' + escapeHtml(ussdMarch) + '</b>)' : '') + '<br><small>Norme RDC : push marchand, pas transfert perso.</small>';
+        info.classList.remove('hidden');
+      } else if (number || holder) {
+        info.innerHTML = '💸 Le montant sera transféré sur le compte <strong>' + escapeHtml(holder || 'officiel de l\'institut') + '</strong>' + (number ? ' — <strong>' + escapeHtml(number) + '</strong>' : '') + ' (fallback perso — configurez le code marchand pour la norme).';
         info.classList.remove('hidden');
       } else {
         info.classList.add('hidden');
@@ -316,30 +323,35 @@
   function openPaymentPrompt(reg) {
     payRequestReg = reg;
     const labels = OPERATOR_LABELS[reg.paymentMethod];
+    const march = labels ? settings[labels.march] : '';
+    const marchName = labels ? (settings[labels.marchName] || 'ISTC Kimpese') : 'ISTC';
+    const ussdMarch = labels ? (settings[labels.ussdMarch] || settings[labels.ussd] || '') : '';
     const number = labels ? settings[labels.num] : '';
     const holder = labels ? settings[labels.holder] : '';
     const iconMap = { 'Orange Money':'/images/payments/orange-money.png','M-Pesa':'/images/payments/m-pesa.png','MTN MoMo':'/images/payments/mtn-momo.svg','Airtel Money':'/images/payments/airtel-money.svg' };
     const codeMap = {
-      'Orange Money': settings.ussdOrangeCode || '*150#',
-      'M-Pesa': settings.ussdMpesaCode || '*150*00#',
-      'MTN MoMo': settings.ussdMtnCode || '*126#',
-      'Airtel Money': settings.ussdAirtelCode || '*185#'
+      'Orange Money': ussdMarch || settings.ussdOrangeCode || '*150#',
+      'M-Pesa': ussdMarch || settings.ussdMpesaCode || '*150*00#',
+      'MTN MoMo': ussdMarch || settings.ussdMtnCode || '*135#',
+      'Airtel Money': ussdMarch || settings.ussdAirtelCode || '*500#'
     };
     const ref = 'ISTC-' + String(reg.id).slice(-6);
-    $('#ussdOperator').textContent = reg.paymentMethod;
+    const isMarchand = !!march;
+    $('#ussdOperator').textContent = reg.paymentMethod + (isMarchand ? ' — Marchand' : '');
     $('#ussdCode').textContent = codeMap[reg.paymentMethod] || '';
+    const dest = isMarchand ? ('Marchand <b>' + escapeHtml(marchName) + '</b> — Code <b>' + escapeHtml(march) + '</b>') : (holder ? escapeHtml(holder + ' ('+number+')') : escapeHtml(number||'compte ISTC'));
     $('#ussdBody').innerHTML =
       '<div class="betpawa-head"><img src="'+asset(iconMap[reg.paymentMethod]||'')+'" style="height:28px"><b>'+escapeHtml(reg.paymentMethod)+'</b><span class="betpawa-amount">'+escapeHtml(reg.amount||'10 $')+'</span></div>' +
-      '<div class="betpawa-ref">Réf: <b>'+ref+'</b> · Recharge comme BetPawa</div>' +
+      '<div class="betpawa-ref">Réf: <b>'+ref+'</b> · Paiement marchand norme RDC ' + (isMarchand ? '✓' : '(fallback perso)') + '</div>' +
       '<div class="ussd-text">' +
-      '&#128241; Demande de paiement envoyée sur <b>' + escapeHtml(reg.paymentNumber) + '</b>.' +
+      '&#128241; Demande marchand envoyée sur <b>' + escapeHtml(reg.paymentNumber) + '</b>.' +
       '<div class="ussd-steps">' +
-      '<div>1 · Vérifiez la notification push <b>' + escapeHtml(reg.paymentMethod) + '</b> sur votre téléphone</div>' +
-      '<div>2 · Montant à débiter : <b>' + escapeHtml(reg.amount || '10 $') + '</b> → ' + escapeHtml(holder ? holder + ' ('+number+')' : number||'compte ISTC') + '</div>' +
-      '<div>3 · Saisissez votre <b>code PIN Mobile Money sur votre téléphone</b> pour confirmer</div>' +
-      '<div>4 · Pas de notification ? Composez <b>' + escapeHtml(codeMap[reg.paymentMethod]) + '</b> puis validez</div>' +
+      '<div>1 · Push marchand <b>' + escapeHtml(reg.paymentMethod) + '</b> → ' + dest + '</div>' +
+      '<div>2 · Montant : <b>' + escapeHtml(reg.amount || '10 $') + '</b> — Vérifiez la notif sur votre téléphone</div>' +
+      '<div>3 · Saisissez votre <b>PIN sur votre téléphone</b> pour débiter vers le marchand</div>' +
+      '<div>4 · Pas de push ? Composez <b>' + escapeHtml(codeMap[reg.paymentMethod]) + '</b> → Paiement marchand → Code <b>' + escapeHtml(march||number||'marchand') + '</b></div>' +
       '</div>' +
-      '<small class="ussd-warn">&#128274; Ne partagez jamais votre PIN sur le site. La validation se fait uniquement sur votre téléphone, comme une recharge BetPawa.</small>' +
+      '<small class="ussd-warn">&#128274; Norme marchand : jamais de transfert perso. PIN uniquement sur téléphone.</small>' +
       '</div>' +
       '<div class="ussd-btns">' +
       '<button class="ussd-btn primary" id="payValidatedBtn">&#10003; J\'ai confirmé sur mon téléphone</button>' +

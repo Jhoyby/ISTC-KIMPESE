@@ -450,8 +450,8 @@
         </div>
 
         <div class="card">
-          <h3>Comptes de réception des fonds</h3>
-          <p class="card-sub">Les numéros vers lesquels l'argent des inscriptions est transféré. Ils sont communiqués aux candidats pendant le paiement.</p>
+          <h3>Paiement marchand — norme par réseau</h3>
+          <p class="card-sub">Configurez chaque opérateur en <b>paiement marchand</b> (norme RDC) : code marchand / Paybill, pas transfert perso. Le candidat paie vers le marchand ISTC via push USSD marchand.</p>
           <div class="pay-grid">
             <label class="check-row">
               <input type="checkbox" id="f-orangeEnabled" data-field="orangeEnabled">
@@ -516,19 +516,67 @@
               <input type="text" id="f-airtelHolder" data-field="airtelHolder" placeholder="Nom du titulaire du compte">
             </div>
             <div class="field">
-              <label>Code USSD Orange Money</label>
+              <label>Code marchand Orange Money (norme)</label>
+              <input type="text" id="f-orangeMerchant" data-field="orangeMerchant" placeholder="Ex: OMT12345 ou *144*1*CODE#">
+            </div>
+            <div class="field">
+              <label>Nom marchand Orange</label>
+              <input type="text" id="f-orangeMerchantName" data-field="orangeMerchantName" placeholder="ISTC Kimpese">
+            </div>
+            <div class="field">
+              <label>Paybill / Code marchand M-Pesa (norme Vodacom)</label>
+              <input type="text" id="f-mpesaMerchant" data-field="mpesaMerchant" placeholder="Ex: 123456">
+            </div>
+            <div class="field">
+              <label>Nom marchand M-Pesa</label>
+              <input type="text" id="f-mpesaMerchantName" data-field="mpesaMerchantName" placeholder="ISTC Kimpese">
+            </div>
+            <div class="field">
+              <label>Code marchand MTN MoMo (MoMo Pay)</label>
+              <input type="text" id="f-mtnMerchant" data-field="mtnMerchant" placeholder="Ex: MOMO1234">
+            </div>
+            <div class="field">
+              <label>Nom marchand MTN</label>
+              <input type="text" id="f-mtnMerchantName" data-field="mtnMerchantName" placeholder="ISTC Kimpese">
+            </div>
+            <div class="field">
+              <label>Code marchand Airtel Money</label>
+              <input type="text" id="f-airtelMerchant" data-field="airtelMerchant" placeholder="Ex: AM1234">
+            </div>
+            <div class="field">
+              <label>Nom marchand Airtel</label>
+              <input type="text" id="f-airtelMerchantName" data-field="airtelMerchantName" placeholder="ISTC Kimpese">
+            </div>
+            <div class="field">
+              <label>USSD marchand Orange</label>
+              <input type="text" id="f-ussdOrangeMarchand" data-field="ussdOrangeMarchand" placeholder="*144*1#">
+            </div>
+            <div class="field">
+              <label>USSD marchand M-Pesa</label>
+              <input type="text" id="f-ussdMpesaMarchand" data-field="ussdMpesaMarchand" placeholder="*150*00*">
+            </div>
+            <div class="field">
+              <label>USSD marchand MTN</label>
+              <input type="text" id="f-ussdMtnMarchand" data-field="ussdMtnMarchand" placeholder="*135*5#">
+            </div>
+            <div class="field">
+              <label>USSD marchand Airtel</label>
+              <input type="text" id="f-ussdAirtelMarchand" data-field="ussdAirtelMarchand" placeholder="*500*2#">
+            </div>
+            <div class="field">
+              <label>Code USSD Orange Money (perso fallback)</label>
               <input type="text" id="f-ussdOrangeCode" data-field="ussdOrangeCode" placeholder="#150#">
             </div>
             <div class="field">
-              <label>Code USSD M-Pesa</label>
+              <label>Code USSD M-Pesa (perso fallback)</label>
               <input type="text" id="f-ussdMpesaCode" data-field="ussdMpesaCode" placeholder="#150*00#">
             </div>
             <div class="field">
-              <label>Code USSD MTN MoMo</label>
+              <label>Code USSD MTN MoMo (perso fallback)</label>
               <input type="text" id="f-ussdMtnCode" data-field="ussdMtnCode" placeholder="*126#">
             </div>
             <div class="field">
-              <label>Code USSD Airtel Money</label>
+              <label>Code USSD Airtel Money (perso fallback)</label>
               <input type="text" id="f-ussdAirtelCode" data-field="ussdAirtelCode" placeholder="*185#">
             </div>
           </div>
