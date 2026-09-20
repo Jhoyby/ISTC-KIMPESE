@@ -14,6 +14,7 @@ const UPLOAD_DIR = path.join(__dirname, 'uploads');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const ARTICLES_FILE = path.join(DATA_DIR, 'articles.json');
 const REGISTRATIONS_FILE = path.join(DATA_DIR, 'registrations.json');
+const TEAM_FILE = path.join(DATA_DIR, 'team.json');
 
 const tokens = new Set();
 
@@ -633,6 +634,42 @@ app.delete('/api/registrations/:id', requireAuth, (req, res) => {
   let registrations = readJson(REGISTRATIONS_FILE, []);
   registrations = registrations.filter(r => String(r.id) !== String(req.params.id));
   writeJson(REGISTRATIONS_FILE, registrations);
+  res.json({ ok: true });
+});
+
+/* ---------- Équipe ---------- */
+app.get('/api/team', (req, res) => {
+  res.json(readJson(TEAM_FILE, []));
+});
+app.post('/api/team', requireAuth, upload.single('photo'), async (req, res) => {
+  const team = readJson(TEAM_FILE, []);
+  const data = req.body || {};
+  const nextId = team.reduce((m, t) => Math.max(m, Number(t.id) || 0), 0) + 1;
+  let photo = (data.photo || '').trim();
+  if (req.file) { const [url] = await processUploads([req.file]); photo = url; }
+  const member = { id: nextId, name: (data.name || 'Membre').trim(), role: (data.role || '').trim(), photo, bio: (data.bio || '').trim() };
+  if (!member.name) return res.status(400).json({ error: 'Nom obligatoire' });
+  team.push(member);
+  writeJson(TEAM_FILE, team);
+  res.json({ ok: true, member });
+});
+app.put('/api/team/:id', requireAuth, upload.single('photo'), async (req, res) => {
+  const team = readJson(TEAM_FILE, []);
+  const idx = team.findIndex(t => String(t.id) === String(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Membre introuvable' });
+  const data = req.body || {};
+  if ('name' in data) team[idx].name = String(data.name).trim();
+  if ('role' in data) team[idx].role = String(data.role).trim();
+  if ('bio' in data) team[idx].bio = String(data.bio).trim();
+  if (req.file) { const [url] = await processUploads([req.file]); team[idx].photo = url; }
+  else if ('photo' in data) team[idx].photo = String(data.photo).trim();
+  writeJson(TEAM_FILE, team);
+  res.json({ ok: true, member: team[idx] });
+});
+app.delete('/api/team/:id', requireAuth, (req, res) => {
+  let team = readJson(TEAM_FILE, []);
+  team = team.filter(t => String(t.id) !== String(req.params.id));
+  writeJson(TEAM_FILE, team);
   res.json({ ok: true });
 });
 

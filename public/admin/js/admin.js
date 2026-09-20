@@ -6,7 +6,9 @@
   let settings = {};
   let articles = [];
   let registrations = [];
+  let team = [];
   let editingArticleId = null;
+  let editingTeamId = null;
 
   const api = {
     async request(url, options = {}) {
@@ -39,6 +41,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       }),
+    getTeam: () => api.request('/api/team'),
     getArticles: () => api.request('/api/articles?all=1'),
     saveArticle: (article, isNew) =>
       api.request(isNew ? '/api/articles' : '/api/articles/' + article.id, {
@@ -114,6 +117,7 @@
     dashboard: 'Tableau de bord',
     articles: 'Gestion des articles',
     inscriptions: 'Inscriptions à distance',
+    equipe: 'Équipe',
     apparence: 'Apparence du site',
     contenu: 'Contenu du site',
     seo: 'SEO & Analytics',
@@ -680,6 +684,7 @@ $$('.insert-img-btn').forEach((btn) => {
     try {
       const res = await api.request('/api/upload', { method: 'POST', body: fd });
       if (uploadTarget === 'heroImage') $('#f-heroImage').value = res.url;
+      if (uploadTarget === 'teamPhoto') { $('#t-photo').value = res.url; const p=$('#t-photoPreview'); p.src=res.url; p.classList.remove('hidden'); }
       if (uploadTarget === 'logoImage') {
         $('#f-logoImage').value = res.url;
         settings.logoImage = res.url;
@@ -706,21 +711,65 @@ $$('.insert-img-btn').forEach((btn) => {
     e.target.value = '';
   });
 
+  /* ---------- Équipe ---------- */
+  function renderTeam() {
+    const tbody = $('#teamBody');
+    if (!team.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;opacity:.6">Aucun membre. Ajoutez l\'équipe.</td></tr>'; return; }
+    tbody.innerHTML = '';
+    team.forEach(m => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${m.photo ? `<img src="${m.photo}" style="width:44px;height:44px;object-fit:cover;border-radius:50%">` : '—'}</td><td><strong>${m.name}</strong></td><td>${m.role||'—'}</td><td>${(m.bio||'').slice(0,60)}</td><td><div class="actions-cell"><button class="btn-edit" data-edit-team="${m.id}">Modifier</button><button class="btn-del" data-del-team="${m.id}">Supprimer</button></div></td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  function openTeamModal(member) {
+    editingTeamId = member ? member.id : null;
+    $('#teamModalTitle').textContent = member ? 'Modifier membre' : 'Nouveau membre';
+    $('#t-name').value = member ? member.name : '';
+    $('#t-role').value = member ? member.role : '';
+    $('#t-photo').value = member ? member.photo : '';
+    $('#t-bio').value = member ? member.bio : '';
+    const p = $('#t-photoPreview'); if (member && member.photo) { p.src = member.photo; p.classList.remove('hidden'); } else p.classList.add('hidden');
+    $('#teamModal').classList.remove('hidden');
+  }
+  function closeTeamModal(){ $('#teamModal').classList.add('hidden'); }
+  $('#newTeamBtn').addEventListener('click', ()=> openTeamModal(null));
+  $$('[data-close-team]').forEach(el=> el.addEventListener('click', closeTeamModal));
+  $('#teamBody').addEventListener('click', e=>{
+    const ed=e.target.closest('[data-edit-team]'); if(ed){ const m=team.find(x=>String(x.id)===ed.dataset.editTeam); if(m) openTeamModal(m); }
+    const del=e.target.closest('[data-del-team]'); if(del){ if(!confirm('Supprimer ce membre ?')) return; api.request('/api/team/'+del.dataset.delTeam,{method:'DELETE'}).then(()=>{ team=team.filter(x=>String(x.id)!==String(del.dataset.delTeam)); renderTeam(); toast('Membre supprimé'); }).catch(err=> toast(err.message,true)); }
+  });
+  $('#saveTeamBtn').addEventListener('click', async ()=>{
+    const name=$('#t-name').value.trim(); if(!name) return toast('Nom obligatoire',true);
+    const body={ name, role:$('#t-role').value.trim(), photo:$('#t-photo').value.trim(), bio:$('#t-bio').value.trim() };
+    try{
+      let res; if(editingTeamId) res=await api.request('/api/team/'+editingTeamId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      else res=await api.request('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(editingTeamId){ const idx=team.findIndex(x=>String(x.id)===String(editingTeamId)); if(idx!==-1) team[idx]=res.member; } else team.push(res.member);
+      closeTeamModal(); renderTeam(); toast('Équipe enregistrée');
+    }catch(err){ toast(err.message,true); }
+  });
+  // upload photo équipe
+  document.querySelector('[data-target="teamPhoto"]').addEventListener('click', ()=> { uploadTarget='teamPhoto'; $('#fileInput').click(); });
+
   /* ---------- Init ---------- */
   async function init() {
     try {
-      const [s, a, r] = await Promise.all([
+      const [s, a, r, t] = await Promise.all([
         api.getSettings(),
         api.getArticles(),
-        api.getRegistrations()
+        api.getRegistrations(),
+        api.getTeam()
       ]);
       settings = s;
       articles = a;
       registrations = r;
+      team = t;
       bindSettings();
       bindColorSync();
       renderArticlesTable();
       renderRegistrations();
+      renderTeam();
       refreshDashboard();
     } catch (err) {
       if (err.message !== 'Session expirée') toast(err.message, true);

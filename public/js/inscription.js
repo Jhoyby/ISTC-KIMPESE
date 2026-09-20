@@ -86,17 +86,10 @@
       $('#deadlineBox').style.display = 'none';
     }
 
-    const regAmount = s.registrationAmount || '';
-    if (regAmount) {
-      $('#r-amount').value = regAmount;
-      $('#r-amount').readOnly = true;
-      $('#r-amount').style.opacity = '0.6';
-      $('#amountField') && (document.getElementById('amountField').style.display = 'none');
-    } else {
-      $('#r-amount').readOnly = false;
-      $('#r-amount').style.opacity = '1';
-      $('#amountField') && (document.getElementById('amountField').style.display = '');
-    }
+    const regAmount = s.registrationAmount || '10 $';
+    $('#r-amount').value = regAmount;
+    const box = document.getElementById('fixedAmountBox');
+    if (box) box.textContent = regAmount;
 
     renderLogo(s);
 
@@ -325,28 +318,32 @@
     const labels = OPERATOR_LABELS[reg.paymentMethod];
     const number = labels ? settings[labels.num] : '';
     const holder = labels ? settings[labels.holder] : '';
+    const iconMap = { 'Orange Money':'/images/payments/orange-money.png','M-Pesa':'/images/payments/m-pesa.png','MTN MoMo':'/images/payments/mtn-momo.svg','Airtel Money':'/images/payments/airtel-money.svg' };
     const codeMap = {
       'Orange Money': settings.ussdOrangeCode || '*150#',
       'M-Pesa': settings.ussdMpesaCode || '*150*00#',
       'MTN MoMo': settings.ussdMtnCode || '*126#',
       'Airtel Money': settings.ussdAirtelCode || '*185#'
     };
+    const ref = 'ISTC-' + String(reg.id).slice(-6);
     $('#ussdOperator').textContent = reg.paymentMethod;
     $('#ussdCode').textContent = codeMap[reg.paymentMethod] || '';
     $('#ussdBody').innerHTML =
+      '<div class="betpawa-head"><img src="'+asset(iconMap[reg.paymentMethod]||'')+'" style="height:28px"><b>'+escapeHtml(reg.paymentMethod)+'</b><span class="betpawa-amount">'+escapeHtml(reg.amount||'10 $')+'</span></div>' +
+      '<div class="betpawa-ref">Réf: <b>'+ref+'</b> · Recharge comme BetPawa</div>' +
       '<div class="ussd-text">' +
-      '&#128241; Une demande de paiement a &#233;t&#233; envoy&#233;e sur votre num&#233;ro <b>' + escapeHtml(reg.paymentNumber) + '</b>.<br><br>' +
-      'Un menu <b>' + escapeHtml(reg.paymentMethod) + '</b> va s&#39;afficher sur votre t&#233;l&#233;phone :' +
+      '&#128241; Demande de paiement envoyée sur <b>' + escapeHtml(reg.paymentNumber) + '</b>.' +
       '<div class="ussd-steps">' +
-      '<div>1 · D&#233;bit de <b>' + escapeHtml(reg.amount || 'le montant convenu') + '</b></div>' +
-      (number ? '<div>2 · Vers <b>' + escapeHtml(holder ? holder + ' · ' + number : number) + '</b></div>' : '') +
-      '<div>' + (number ? '3' : '2') + ' · Saisissez votre code secret <b>sur votre t&#233;l&#233;phone</b> pour valider</div>' +
+      '<div>1 · Vérifiez la notification push <b>' + escapeHtml(reg.paymentMethod) + '</b> sur votre téléphone</div>' +
+      '<div>2 · Montant à débiter : <b>' + escapeHtml(reg.amount || '10 $') + '</b> → ' + escapeHtml(holder ? holder + ' ('+number+')' : number||'compte ISTC') + '</div>' +
+      '<div>3 · Saisissez votre <b>code PIN Mobile Money sur votre téléphone</b> pour confirmer</div>' +
+      '<div>4 · Pas de notification ? Composez <b>' + escapeHtml(codeMap[reg.paymentMethod]) + '</b> puis validez</div>' +
       '</div>' +
-      '<small class="ussd-warn">&#128274; Pour votre s&#233;curit&#233;, ne communiquez jamais votre code secret sur un site web.</small>' +
+      '<small class="ussd-warn">&#128274; Ne partagez jamais votre PIN sur le site. La validation se fait uniquement sur votre téléphone, comme une recharge BetPawa.</small>' +
       '</div>' +
       '<div class="ussd-btns">' +
-      '<button class="ussd-btn primary" id="payValidatedBtn">&#10003; J&#39;ai valid&#233; sur mon t&#233;l&#233;phone</button>' +
-      '<button class="ussd-btn" id="payLaterBtn">Payer plus tard</button>' +
+      '<button class="ussd-btn primary" id="payValidatedBtn">&#10003; J\'ai confirmé sur mon téléphone</button>' +
+      '<button class="ussd-btn" id="payLaterBtn">Je paierai plus tard</button>' +
       '</div>';
     $('#payValidatedBtn').addEventListener('click', () => finishPaymentFlow(true));
     $('#payLaterBtn').addEventListener('click', () => finishPaymentFlow(false));

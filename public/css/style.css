@@ -1095,6 +1095,8 @@ aspect-ratio: auto; min-height: 100%; }
   margin-top: 6px;
   line-height: 1.5;}
 
+.fixed-amount-box { padding: 12px 16px; background: rgba(var(--primary-rgb),0.08); border: 1.5px solid var(--primary); border-radius: 10px; font-weight: 800; font-size: 1.05rem; color: var(--primary); text-align: center; }
+
 .reception-info {
   margin-top: 12px;
   padding: 10px 14px;
@@ -1244,6 +1246,10 @@ aspect-ratio: auto; min-height: 100%; }
   margin-bottom: 12px;
   text-align: center;
 }
+.betpawa-head{ display:flex; align-items:center; gap:10px; justify-content:center; background:rgba(255,255,255,0.06); padding:10px; border-radius:10px; margin-bottom:10px; }
+.betpawa-head img{ background:#fff; border-radius:6px; padding:2px; }
+.betpawa-amount{ margin-left:auto; background:var(--secondary); color:#111; padding:4px 10px; border-radius:999px; font-weight:800; }
+.betpawa-ref{ text-align:center; font-size:0.78rem; opacity:0.8; margin-bottom:8px; }
 
 .ussd-text {
   font-size: 0.95rem;

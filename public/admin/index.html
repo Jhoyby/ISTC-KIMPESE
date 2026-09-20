@@ -58,6 +58,7 @@
         <button class="nav-btn active" data-tab="dashboard">Tableau de bord</button>
         <button class="nav-btn" data-tab="articles">Articles</button>
         <button class="nav-btn" data-tab="inscriptions">Inscriptions</button>
+        <button class="nav-btn" data-tab="equipe">Équipe</button>
         <button class="nav-btn" data-tab="apparence">Apparence</button>
         <button class="nav-btn" data-tab="contenu">Contenu</button>
         <button class="nav-btn" data-tab="seo">SEO & Analytics</button>
@@ -122,6 +123,41 @@
               </thead>
               <tbody id="articlesTableBody"></tbody>
             </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Équipe -->
+      <section class="tab-panel" id="panel-equipe">
+        <div class="panel-head">
+          <h3>Équipe</h3>
+          <button class="btn btn-primary" id="newTeamBtn">+ Ajouter un membre</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Photo</th>
+                  <th>Nom</th>
+                  <th>Rôle</th>
+                  <th>Bio</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="teamBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal hidden" id="teamModal">
+          <div class="modal-backdrop" data-close-team></div>
+          <div class="modal-content">
+            <h3 id="teamModalTitle">Nouveau membre</h3>
+            <div class="field"><label>Nom *</label><input type="text" id="t-name"></div>
+            <div class="field"><label>Rôle / Fonction</label><input type="text" id="t-role" placeholder="Ex : Directeur, Chargé de com..."></div>
+            <div class="field"><label>Photo (URL ou upload)</label><div class="inline-upload"><input type="text" id="t-photo" placeholder="URL"><button class="btn btn-sm upload-btn" data-target="teamPhoto">Uploader</button></div><img id="t-photoPreview" class="image-preview hidden" alt=""></div>
+            <div class="field"><label>Bio</label><textarea id="t-bio" rows="3"></textarea></div>
+            <div class="form-actions"><button class="btn btn-ghost" data-close-team>Annuler</button><button class="btn btn-primary" id="saveTeamBtn">Enregistrer</button></div>
           </div>
         </div>
       </section>
@@ -333,11 +369,11 @@
                 <span>Ouvrir les inscriptions en ligne</span>
               </label>
             </div>
-<div class="field">
-               <label>Montant fixe d'inscription (USD ou FC)</label>
-               <input type="text" id="f-registrationAmount" data-field="registrationAmount" placeholder="Ex : 150 $ ou 300000 FC">
-               <small class="field-hint">Laissez vide pour laisser le candidat indiquer le montant.</small>
-             </div>
+ <div class="field">
+                <label>Montant fixe d'inscription (USD ou FC) — modifiable ici (défaut 10 $)</label>
+                <input type="text" id="f-registrationAmount" data-field="registrationAmount" placeholder="Ex : 10 $">
+                <small class="field-hint">C'est le seul montant affiché et facturé au candidat (non modifiable côté inscription).</small>
+              </div>
              <div class="field">
                <label>Date limite des inscriptions</label>
                <input type="date" id="f-registrationDeadline" data-field="registrationDeadline">

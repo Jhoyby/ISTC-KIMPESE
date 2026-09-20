@@ -27,7 +27,7 @@
   "registrationTitle": "Inscriptions à distance",
   "registrationText": "Rejoignez l'ISTC depuis n'importe où. Remplissez le formulaire, choisissez votre filière et payez vos frais d'inscription en ligne via Orange Money, M-Pesa, Visa ou Mastercard.",
   "registrationDeadline": "2026-10-15",
-  "registrationAmount": "",
+  "registrationAmount": "10 $",
   "orangeEnabled": true,
   "mpesaEnabled": true,
   "visaEnabled": true,
