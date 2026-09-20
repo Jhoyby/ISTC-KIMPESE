@@ -134,10 +134,22 @@
                 <small class="field-hint">Frais d'inscription fixes — modifiables uniquement par l'admin.</small>
               </div>
 
-            <div class="form-field">
-              <label>Mode de paiement *</label>
-              <div class="payment-options" id="paymentOptions"></div>
+            <div class="betpawa-cashier">
+              <div class="betpawa-cashier-header">
+                <span class="betpawa-brand">ISTC <small>× Mobile Money</small></span>
+                <span class="betpawa-secure">🔒 Sécurisé</span>
+              </div>
+              <div class="betpawa-amount-row">
+                <span>Montant à déposer</span>
+                <strong id="betpawaAmount">10 $</strong>
+              </div>
+              <div class="betpawa-steps-mini">
+                <span>1 Choisir</span> → <span>2 Numéro</span> → <span>3 PIN sur téléphone</span>
+              </div>
+              <label style="font-weight:700;margin:12px 0 8px;display:block;">Mode de paiement * <small style="font-weight:400;opacity:.6">(comme sur betpawa.cd — l'opérateur est détecté par votre numéro)</small></label>
+              <div class="payment-options betpawa-grid" id="paymentOptions"></div>
               <div class="reception-info hidden" id="receptionInfo"></div>
+              <div class="betpawa-hint">Dépôt instantané · 10$ fixe · Pas de frais ISTC (frais opérateur selon grille)</div>
             </div>
 
             <div class="form-field hidden" id="mobilePayField">

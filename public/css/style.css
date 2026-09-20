@@ -1096,6 +1096,18 @@ aspect-ratio: auto; min-height: 100%; }
   line-height: 1.5;}
 
 .fixed-amount-box { padding: 12px 16px; background: rgba(var(--primary-rgb),0.08); border: 1.5px solid var(--primary); border-radius: 10px; font-weight: 800; font-size: 1.05rem; color: var(--primary); text-align: center; }
+.betpawa-cashier{ background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; box-shadow: var(--shadow-sm); }
+.betpawa-cashier-header{ display:flex; align-items:center; justify-content:space-between; background: #0f2b1a; color:#fff; margin:-16px -16px 14px; padding:12px 16px; border-radius:14px 14px 0 0; }
+.betpawa-brand{ font-weight:800; letter-spacing:.5px; }
+.betpawa-brand small{ font-weight:400; opacity:.8; }
+.betpawa-secure{ font-size:.78rem; opacity:.9; }
+.betpawa-amount-row{ display:flex; align-items:center; justify-content:space-between; background: rgba(var(--primary-rgb),0.07); border: 1px solid var(--border); border-radius: 10px; padding:12px 14px; font-weight:700; }
+.betpawa-amount-row strong{ font-size:1.35rem; color: var(--primary); }
+.betpawa-steps-mini{ display:flex; gap:6px; align-items:center; justify-content:center; font-size:.72rem; opacity:.6; margin:10px 0 4px; flex-wrap:wrap; }
+.betpawa-grid{ grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); }
+.betpawa-grid .option-card{ border:2px solid var(--border); border-radius:12px; padding:14px 8px; min-height:72px; }
+.betpawa-grid .option-card:hover{ border-color: var(--primary); }
+.betpawa-hint{ text-align:center; font-size:.72rem; opacity:.55; margin-top:10px; }
 
 .reception-info {
   margin-top: 12px;

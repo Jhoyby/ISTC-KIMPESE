@@ -90,6 +90,8 @@
     $('#r-amount').value = regAmount;
     const box = document.getElementById('fixedAmountBox');
     if (box) box.textContent = regAmount;
+    const betAmt = document.getElementById('betpawaAmount');
+    if (betAmt) betAmt.textContent = regAmount;
 
     renderLogo(s);
 
