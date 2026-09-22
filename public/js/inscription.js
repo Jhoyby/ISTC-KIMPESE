@@ -502,10 +502,12 @@
   async function init() {
     try {
       const res = await fetch('/api/settings');
-      applySettings(await res.json());
-    } catch (e) {
-      console.error(e);
-    }
+      if (res.ok) { applySettings(await res.json()); return; }
+    } catch (e) {}
+    try {
+      const res = await fetch('https://raw.githubusercontent.com/jhoyby/ISTC-KIMPESE/main/data/settings.json');
+      if (res.ok) { applySettings(await res.json()); }
+    } catch (e) { console.error(e); }
   }
 
   init();

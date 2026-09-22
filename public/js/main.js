@@ -607,8 +607,8 @@
     renderDate();
     try {
       const [s, arts] = await Promise.all([
-        fetchJson(['/api/settings', './data/settings.json', 'data/settings.json', '/data/settings.json']),
-        fetchJson(['/api/articles', './data/articles.json', 'data/articles.json', '/data/articles.json'])
+        fetchJson(['/api/settings', 'https://raw.githubusercontent.com/jhoyby/ISTC-KIMPESE/main/data/settings.json', './data/settings.json', 'data/settings.json', '/data/settings.json']),
+        fetchJson(['/api/articles', 'https://raw.githubusercontent.com/jhoyby/ISTC-KIMPESE/main/data/articles.json', './data/articles.json', 'data/articles.json', '/data/articles.json'])
       ]);
       applySettings(s);
       allArticles = Array.isArray(arts) ? arts : [];

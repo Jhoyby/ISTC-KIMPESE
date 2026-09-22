@@ -293,13 +293,13 @@
     if (!id) { const pc = $('#pageContent'); if (pc) pc.textContent = 'Aucun article sélectionné.'; return; }
     try {
       const [s, article] = await Promise.all([
-        fetchJson(['/api/settings', './data/settings.json', 'data/settings.json', '/data/settings.json']),
-        fetchJson(['/api/articles/' + id, './data/articles.json', 'data/articles.json', '/data/articles.json']).then((d) => Array.isArray(d) ? d.find((x) => String(x.id) === String(id)) : d)
+        fetchJson(['/api/settings', 'https://raw.githubusercontent.com/jhoyby/ISTC-KIMPESE/main/data/settings.json', './data/settings.json', 'data/settings.json', '/data/settings.json']),
+        fetchJson(['/api/articles/' + id, 'https://raw.githubusercontent.com/jhoyby/ISTC-KIMPESE/main/data/articles.json', './data/articles.json', 'data/articles.json', '/data/articles.json']).then((d) => Array.isArray(d) ? d.find((x) => String(x.id) === String(id)) : d)
       ]);
       applySettings(s);
       if (!article || article.error) throw new Error('not found');
       renderArticle(article);
-      const all = await fetchJson(['/api/articles', './data/articles.json', 'data/articles.json', '/data/articles.json']);
+      const all = await fetchJson(['/api/articles', 'https://raw.githubusercontent.com/jhoyby/ISTC-KIMPESE/main/data/articles.json', './data/articles.json', 'data/articles.json', '/data/articles.json']);
       const list = Array.isArray(all) ? all : [];
       renderCategoryNav(list);
       renderSidebar(article, list);

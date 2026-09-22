@@ -62,7 +62,7 @@
   "smtpHost": "",
   "smtpPort": "",
   "smtpUser": "contact@istc.cd",
-  "smtpPass": "istc2026",
+  "smtpPass": "",
   "smtpFrom": "",
   "orangeHolder": "",
   "mpesaHolder": "",
